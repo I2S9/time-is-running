@@ -3,13 +3,13 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --font-playfull-daily: 'Playfull Daily', cursive;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-playfull-daily: var(--font-playfull-daily);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -22,5 +22,79 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-playfull-daily), Arial, Helvetica, sans-serif;
+}
+
+/* Custom animations for floating clouds */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px);
+  }
+  25% {
+    transform: translateY(-10px) translateX(5px);
+  }
+  50% {
+    transform: translateY(-5px) translateX(-5px);
+  }
+  75% {
+    transform: translateY(-15px) translateX(3px);
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-float-delay-1 {
+  animation: float 6s ease-in-out infinite;
+  animation-delay: 1s;
+}
+
+.animate-float-delay-2 {
+  animation: float 6s ease-in-out infinite;
+  animation-delay: 2s;
+}
+
+.animate-float-delay-3 {
+  animation: float 6s ease-in-out infinite;
+  animation-delay: 3s;
+}
+
+/* Custom styles for better responsive design */
+@media (max-width: 768px) {
+  .text-shadow-responsive {
+    text-shadow: 1px 1px 0px white, -1px -1px 0px white, 1px -1px 0px white, -1px 1px 0px white;
+  }
+}
+
+@media (min-width: 769px) {
+  .text-shadow-responsive {
+    text-shadow: 2px 2px 0px white, -2px -2px 0px white, 2px -2px 0px white, -2px 2px 0px white;
+  }
+}
+
+/* Button push effect - Duolingo style */
+.push-button {
+  position: relative;
+  transition: all 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  box-shadow: 0 4px 0 #AFA20C;
+}
+
+.push-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 #AFA20C;
+}
+
+.push-button:active {
+  transform: translateY(2px);
+  box-shadow: 0 0 0 #AFA20C;
+}
+
+.push-shadow {
+  transition: all 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.push-button:active + .push-shadow {
+  top: 0;
+  transform: scale(0.98);
 }
