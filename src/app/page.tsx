@@ -5,24 +5,55 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-[#B2E4F6] relative overflow-hidden">
       {/* Animated Cloud decorations */}
-      <div className="absolute inset-0 pointer-events-none">
-        {/* Top left clouds */}
-        <div className="absolute top-16 left-8 w-32 h-20 bg-white rounded-full opacity-90 animate-float"></div>
-        <div className="absolute top-12 left-16 w-24 h-16 bg-white rounded-full opacity-90 animate-float-delay-1"></div>
-        <div className="absolute top-20 left-24 w-28 h-18 bg-white rounded-full opacity-90 animate-float-delay-2"></div>
-        
-        {/* Top right clouds */}
-        <div className="absolute top-24 right-16 w-28 h-18 bg-white rounded-full opacity-90 animate-float-delay-3"></div>
-        <div className="absolute top-20 right-24 w-24 h-16 bg-white rounded-full opacity-90 animate-float"></div>
-        <div className="absolute top-28 right-8 w-32 h-20 bg-white rounded-full opacity-90 animate-float-delay-1"></div>
-        
-        {/* Middle clouds */}
-        <div className="absolute top-64 left-1/3 w-20 h-14 bg-white rounded-full opacity-90 animate-float-delay-2"></div>
-        <div className="absolute top-60 left-1/3 w-16 h-12 bg-white rounded-full opacity-90 animate-float-delay-3"></div>
-        
-        {/* Bottom clouds */}
-        <div className="absolute top-96 right-1/4 w-24 h-16 bg-white rounded-full opacity-90 animate-float"></div>
-        <div className="absolute top-92 right-1/4 w-20 h-14 bg-white rounded-full opacity-90 animate-float-delay-1"></div>
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        {/* Floating clouds from right to left */}
+        <Image
+          src="/images/cloud.png"
+          alt="Cloud"
+          width={200}
+          height={120}
+          className="absolute top-8 w-32 h-20 opacity-80 animate-float-right-to-left-slow"
+        />
+        <Image
+          src="/images/white clouds.png"
+          alt="White Cloud"
+          width={300}
+          height={180}
+          className="absolute top-48 w-64 h-40 opacity-90 animate-float-right-to-left-slow"
+          style={{ animationDelay: '12s' }}
+        />
+        <Image
+          src="/images/cloud.png"
+          alt="Cloud"
+          width={200}
+          height={120}
+          className="absolute top-88 w-28 h-16 opacity-75 animate-float-right-to-left-slow"
+          style={{ animationDelay: '25s' }}
+        />
+        <Image
+          src="/images/white clouds.png"
+          alt="White Cloud"
+          width={300}
+          height={180}
+          className="absolute top-128 w-56 h-36 opacity-85 animate-float-right-to-left-slow"
+          style={{ animationDelay: '38s' }}
+        />
+        <Image
+          src="/images/cloud.png"
+          alt="Cloud"
+          width={200}
+          height={120}
+          className="absolute top-168 w-20 h-12 opacity-70 animate-float-right-to-left-slow"
+          style={{ animationDelay: '50s' }}
+        />
+        <Image
+          src="/images/white clouds.png"
+          alt="White Cloud"
+          width={300}
+          height={180}
+          className="absolute top-208 w-72 h-48 opacity-90 animate-float-right-to-left-slow"
+          style={{ animationDelay: '62s' }}
+        />
       </div>
 
       {/* Header Navigation - Shorter with equidistant elements */}
@@ -65,13 +96,13 @@ export default function Home() {
 
                     {/* Clock and Time Section - Clock on left, time centered */}
           <div className="relative mb-8 md:mb-10">
-            <div className="absolute left-8 md:left-16 top-full transform -translate-y-1/2 -rotate-12 md:-rotate-6">
+            <div className="absolute left-4 md:left-8 lg:left-16 top-[120%] md:top-[140%] lg:top-[160%] transform -translate-y-1/2 animate-clock-bounce md:animate-clock-bounce-md">
               <Image
                 src="/images/clock.png"
                 alt="Alarm Clock"
                 width={200}
                 height={200}
-                className="w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48"
+                className="w-20 h-20 sm:w-24 sm:h-24 md:w-32 md:h-32 lg:w-40 lg:h-40 xl:w-48 xl:h-48"
               />
             </div>
             <div className="flex justify-center">

@@ -41,6 +41,47 @@ body {
   }
 }
 
+/* Cloud floating from right to left */
+@keyframes floatRightToLeft {
+  0% {
+    transform: translateX(100vw) translateY(0px);
+  }
+  100% {
+    transform: translateX(-200px) translateY(0px);
+  }
+}
+
+/* Clock bouncing animation */
+@keyframes clockBounce {
+  0%, 100% {
+    transform: translateY(0px) rotate(-12deg);
+  }
+  25% {
+    transform: translateY(-8px) rotate(-8deg);
+  }
+  50% {
+    transform: translateY(-12px) rotate(-4deg);
+  }
+  75% {
+    transform: translateY(-6px) rotate(-8deg);
+  }
+}
+
+@keyframes clockBounceMd {
+  0%, 100% {
+    transform: translateY(0px) rotate(-6deg);
+  }
+  25% {
+    transform: translateY(-8px) rotate(-4deg);
+  }
+  50% {
+    transform: translateY(-12px) rotate(-2deg);
+  }
+  75% {
+    transform: translateY(-6px) rotate(-4deg);
+  }
+}
+
 .animate-float {
   animation: float 6s ease-in-out infinite;
 }
@@ -58,6 +99,26 @@ body {
 .animate-float-delay-3 {
   animation: float 6s ease-in-out infinite;
   animation-delay: 3s;
+}
+
+.animate-float-right-to-left {
+  animation: floatRightToLeft 40s linear infinite;
+}
+
+.animate-float-right-to-left-slow {
+  animation: floatRightToLeft 50s linear infinite;
+}
+
+.animate-float-right-to-left-fast {
+  animation: floatRightToLeft 35s linear infinite;
+}
+
+.animate-clock-bounce {
+  animation: clockBounce 2s ease-in-out infinite;
+}
+
+.animate-clock-bounce-md {
+  animation: clockBounceMd 2s ease-in-out infinite;
 }
 
 /* Custom styles for better responsive design */
