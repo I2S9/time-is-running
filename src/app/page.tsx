@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import CurrentTime from './components/CurrentTime';
 
 export default function Home() {
@@ -61,14 +62,14 @@ export default function Home() {
         <nav className="bg-white rounded-full mx-auto max-w-3xl p-6 shadow-lg">
           <div className="flex flex-col md:flex-row justify-center items-center">
             <div className="flex flex-wrap justify-center md:justify-center w-full gap-8 mb-4 md:mb-0">
-              <a href="#" className="text-lg md:text-xl font-bold text-black hover:text-gray-600 transition-colors py-2 cursor-pointer" 
-                 style={{ fontFamily: 'var(--font-playfull-daily)' }}>PAST</a>
-              <a href="#" className="text-lg md:text-xl font-bold text-black hover:text-gray-600 transition-colors py-2 cursor-pointer"
-                 style={{ fontFamily: 'var(--font-playfull-daily)' }}>PRESENT</a>
-              <a href="#" className="text-lg md:text-xl font-bold text-black hover:text-gray-600 transition-colors py-2 cursor-pointer"
-                 style={{ fontFamily: 'var(--font-playfull-daily)' }}>FUTURE</a>
-              <a href="#" className="text-lg md:text-xl font-bold text-black hover:text-gray-600 transition-colors py-2 cursor-pointer"
-                 style={{ fontFamily: 'var(--font-playfull-daily)' }}>ABOUT US</a>
+              <Link href="/past" className="text-lg md:text-xl font-bold text-black hover:text-gray-600 transition-colors py-2 cursor-pointer" 
+                 style={{ fontFamily: 'var(--font-playfull-daily)' }}>PAST</Link>
+              <Link href="/present" className="text-lg md:text-xl font-bold text-black hover:text-gray-600 transition-colors py-2 cursor-pointer"
+                 style={{ fontFamily: 'var(--font-playfull-daily)' }}>PRESENT</Link>
+              <Link href="/future" className="text-lg md:text-xl font-bold text-black hover:text-gray-600 transition-colors py-2 cursor-pointer"
+                 style={{ fontFamily: 'var(--font-playfull-daily)' }}>FUTURE</Link>
+              <Link href="/about" className="text-lg md:text-xl font-bold text-black hover:text-gray-600 transition-colors py-2 cursor-pointer"
+                 style={{ fontFamily: 'var(--font-playfull-daily)' }}>ABOUT US</Link>
               <button className="bg-black text-white px-6 py-2 rounded-full text-base md:text-lg font-bold hover:bg-gray-800 transition-colors cursor-pointer"
                       style={{ fontFamily: 'var(--font-playfull-daily)' }}>
                 LOG IN
@@ -147,7 +148,7 @@ export default function Home() {
             
             {/* Timeline Content */}
             <div className="relative z-10">
-              {/* Past Section */}
+                            {/* Past Section */}
               <div className="flex flex-col md:flex-row items-center mb-16 md:mb-20">
                 <div className="w-full md:w-1/2 md:pr-8 text-right">
                   <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-black mb-4"
@@ -159,19 +160,39 @@ export default function Home() {
                   </h3>
                   <p className="text-sm md:text-base lg:text-lg text-black leading-relaxed"
                      style={{ fontFamily: 'var(--font-playfull-daily)' }}>
-                                         Look back on completed tasks, tracked moods, and daily reflections to better understand your personal growth and how you&apos;ve spent your time.
+                     Look back on completed tasks, tracked moods, and daily reflections to better understand your personal growth and how you&apos;ve spent your time.
                   </p>
                 </div>
                 <div className="w-4 h-4 md:w-6 md:h-6 bg-[#257CAB] rounded-full border-4 border-white shadow-lg my-4 md:my-0"></div>
                 <div className="w-full md:w-1/2 md:pl-8 text-left">
-                  {/* Empty space for balance */}
+                  {/* Past moment image */}
+                  <div className="flex justify-center">
+                    <Image
+                      src="/images/past-moment.png"
+                      alt="Past Moment"
+                      width={200}
+                      height={200}
+                      className="w-40 h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 xl:w-64 xl:h-64"
+                      style={{ height: 'auto' }}
+                    />
+                  </div>
                 </div>
               </div>
 
               {/* Present Section */}
               <div className="flex flex-col md:flex-row items-center mb-16 md:mb-20">
                 <div className="w-full md:w-1/2 md:pr-8 text-right">
-                  {/* Empty space for balance */}
+                  {/* Present moment image */}
+                  <div className="flex justify-center">
+                    <Image
+                      src="/images/present-moment.png"
+                      alt="Present Moment"
+                      width={200}
+                      height={200}
+                      className="w-40 h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 xl:w-64 xl:h-64"
+                      style={{ height: 'auto' }}
+                    />
+                  </div>
                 </div>
                 <div className="w-4 h-4 md:w-6 md:h-6 bg-[#257CAB] rounded-full border-4 border-white shadow-lg my-4 md:my-0"></div>
                 <div className="w-full md:w-1/2 md:pl-8 text-left">
@@ -206,7 +227,17 @@ export default function Home() {
                 </div>
                 <div className="w-4 h-4 md:w-6 md:h-6 bg-[#257CAB] rounded-full border-4 border-white shadow-lg my-4 md:my-0"></div>
                 <div className="w-full md:w-1/2 md:pl-8 text-left">
-                  {/* Empty space for balance */}
+                  {/* Future moment image */}
+                  <div className="flex justify-center">
+                    <Image
+                      src="/images/future-moment.png"
+                      alt="Future Moment"
+                      width={200}
+                      height={200}
+                      className="w-40 h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 xl:w-64 xl:h-64"
+                      style={{ height: 'auto' }}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
