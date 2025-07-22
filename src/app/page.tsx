@@ -102,7 +102,7 @@ export default function Home() {
                 alt="Alarm Clock"
                 width={200}
                 height={200}
-                className="w-20 h-20 sm:w-24 sm:h-24 md:w-32 md:h-32 lg:w-40 lg:h-40 xl:w-48 xl:h-48"
+                className="w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 xl:w-56 xl:h-56"
               />
             </div>
             <div className="flex justify-center">
@@ -130,23 +130,122 @@ export default function Home() {
       </main>
 
       {/* Bottom Section */}
-      <section className="relative z-10 px-4 py-20 md:py-32">
+      <section className="relative z-10 px-4 py-20 md:py-32 pb-8 md:pb-12">
         <div className="max-w-6xl mx-auto text-center">
-          <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold text-black"
+          <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold text-black mb-32 md:mb-40"
               style={{
                 fontFamily: 'var(--font-playfull-daily)',
                 textShadow: '4px 4px 0px white, -4px -4px 0px white, 4px -4px 0px white, -4px 4px 0px white, 2px 2px 0px white, -2px -2px 0px white, 2px -2px 0px white, -2px 2px 0px white'
               }}>
             WHAT ARE YOU SUPPOSED TO EXPECT?
           </h2>
+          
+          {/* Timeline Section */}
+          <div className="relative">
+            {/* Blue Timeline Line */}
+            <div className="absolute left-1/2 transform -translate-x-1/2 w-2 md:w-3 h-full bg-[#257CAB] rounded-full"></div>
+            
+            {/* Timeline Content */}
+            <div className="relative z-10">
+              {/* Past Section */}
+              <div className="flex flex-col md:flex-row items-center mb-16 md:mb-20">
+                <div className="w-full md:w-1/2 md:pr-8 text-right">
+                  <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-black mb-4"
+                      style={{
+                        fontFamily: 'var(--font-playfull-daily)',
+                        textShadow: '2px 2px 0px white, -2px -2px 0px white, 2px -2px 0px white, -2px 2px 0px white'
+                      }}>
+                    KEEP TRACK OF YOUR PAST
+                  </h3>
+                  <p className="text-sm md:text-base lg:text-lg text-black leading-relaxed"
+                     style={{ fontFamily: 'var(--font-playfull-daily)' }}>
+                                         Look back on completed tasks, tracked moods, and daily reflections to better understand your personal growth and how you&apos;ve spent your time.
+                  </p>
+                </div>
+                <div className="w-4 h-4 md:w-6 md:h-6 bg-[#257CAB] rounded-full border-4 border-white shadow-lg my-4 md:my-0"></div>
+                <div className="w-full md:w-1/2 md:pl-8 text-left">
+                  {/* Empty space for balance */}
+                </div>
+              </div>
+
+              {/* Present Section */}
+              <div className="flex flex-col md:flex-row items-center mb-16 md:mb-20">
+                <div className="w-full md:w-1/2 md:pr-8 text-right">
+                  {/* Empty space for balance */}
+                </div>
+                <div className="w-4 h-4 md:w-6 md:h-6 bg-[#257CAB] rounded-full border-4 border-white shadow-lg my-4 md:my-0"></div>
+                <div className="w-full md:w-1/2 md:pl-8 text-left">
+                  <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-black mb-4"
+                      style={{
+                        fontFamily: 'var(--font-playfull-daily)',
+                        textShadow: '2px 2px 0px white, -2px -2px 0px white, 2px -2px 0px white, -2px 2px 0px white'
+                      }}>
+                    EXPLORE THE PRESENT MOMENT
+                  </h3>
+                  <p className="text-sm md:text-base lg:text-lg text-black leading-relaxed"
+                     style={{ fontFamily: 'var(--font-playfull-daily)' }}>
+                    Stay focused with smart to-dos, a Pomodoro timer, and instant stats that help you manage your time and energy right now.
+                  </p>
+                </div>
+              </div>
+
+              {/* Future Section */}
+              <div className="flex flex-col md:flex-row items-center">
+                <div className="w-full md:w-1/2 md:pr-8 text-right">
+                  <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-black mb-4"
+                      style={{
+                        fontFamily: 'var(--font-playfull-daily)',
+                        textShadow: '2px 2px 0px white, -2px -2px 0px white, 2px -2px 0px white, -2px 2px 0px white'
+                      }}>
+                    SHAPE YOUR FUTURE
+                  </h3>
+                  <p className="text-sm md:text-base lg:text-lg text-black leading-relaxed"
+                     style={{ fontFamily: 'var(--font-playfull-daily)' }}>
+                    Set goals, plan your days, and visualize your time ahead to turn daily actions into long-term progress.
+                  </p>
+                </div>
+                <div className="w-4 h-4 md:w-6 md:h-6 bg-[#257CAB] rounded-full border-4 border-white shadow-lg my-4 md:my-0"></div>
+                <div className="w-full md:w-1/2 md:pl-8 text-left">
+                  {/* Empty space for balance */}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Before it's over section */}
+      <section className="relative z-10 px-4 py-16 md:py-20">
+        <div className="max-w-6xl mx-auto text-center">
+          <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold text-black"
+              style={{
+                fontFamily: 'var(--font-playfull-daily)',
+                textShadow: '4px 4px 0px white, -4px -4px 0px white, 4px -4px 0px white, -4px 4px 0px white, 2px 2px 0px white, -2px -2px 0px white, 2px -2px 0px white, -2px 2px 0px white'
+              }}>
+            BEFORE IT&apos;S OVER...
+          </h2>
         </div>
       </section>
 
       {/* Large spacing before footer */}
-      <div className="h-48 md:h-64 lg:h-96 bg-[#B2E4F6]"></div>
+      <div className="h-32 md:h-48 lg:h-64 bg-[#B2E4F6]"></div>
+
+      {/* Rip image positioned on blue zone */}
+      <div className="relative">
+        <div className="absolute -top-58 md:-top-66 lg:-top-74 left-1/2 transform -translate-x-1/2 z-0">
+          <Image
+            src="/images/rip.png"
+            alt="Rip"
+            width={300}
+            height={200}
+            className="w-48 md:w-64 lg:w-80"
+            style={{ height: 'auto' }}
+          />
+        </div>
+      </div>
 
       {/* Footer */}
-      <footer className="relative z-10 bg-black text-white py-12">
+      <footer className="relative z-10 bg-black text-white py-8">
         <div className="max-w-6xl mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div>

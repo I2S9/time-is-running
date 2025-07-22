@@ -9,7 +9,7 @@ const playfullDaily = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Time Is Running",
+  title: "Time is running",
   description: "Manage your time effectively with our time management application",
 };
 

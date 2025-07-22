@@ -16,14 +16,38 @@ export default function CurrentTime() {
 
   useEffect(() => {
     const updateTime = () => {
-      const now = new Date();
-      const cityTime = new Date(now.toLocaleString("en-US", {timeZone: cities[currentCityIndex].timezone}));
-      const hours = cityTime.getHours();
-      const minutes = cityTime.getMinutes();
-      const ampm = hours >= 12 ? 'PM' : 'AM';
-      const displayHours = hours % 12 || 12;
-      const displayMinutes = minutes.toString().padStart(2, '0');
-      setTime(`${displayHours}:${displayMinutes} ${ampm}`);
+      try {
+        const now = new Date();
+        const formatter = new Intl.DateTimeFormat('en-US', {
+          timeZone: cities[currentCityIndex].timezone,
+          hour: 'numeric',
+          minute: '2-digit',
+          hour12: true
+        });
+        
+        let formattedTime = formatter.format(now);
+        
+        // Forcer le format uniforme avec espace avant PM/AM
+        formattedTime = formattedTime.replace(/(\d+):(\d+)([AP]M)/, (match, hour, minute, period) => {
+          return `${hour}:${minute} ${period}`;
+        });
+        
+        setTime(formattedTime);
+      } catch (error) {
+        console.error('Error updating time:', error);
+        // Fallback en cas d'erreur
+        const now = new Date();
+        const formatter = new Intl.DateTimeFormat('en-US', {
+          hour: 'numeric',
+          minute: '2-digit',
+          hour12: true
+        });
+        let formattedTime = formatter.format(now);
+        formattedTime = formattedTime.replace(/(\d+):(\d+)([AP]M)/, (match, hour, minute, period) => {
+          return `${hour}:${minute} ${period}`;
+        });
+        setTime(formattedTime);
+      }
     };
 
     updateTime();
