@@ -83,6 +83,19 @@ export default function Home() {
         </nav>
       </header>
 
+      {/* Alarm Clock Icon - Top Left */}
+      <div className="absolute top-8 left-8 z-20">
+        <Link href="/" className="block hover:scale-110 transition-transform duration-200">
+          <Image
+            src="/images/clock.png"
+            alt="Alarm Clock - Home"
+            width={60}
+            height={60}
+            className="w-10 h-10 md:w-12 md:h-12 lg:w-14 lg:h-14"
+          />
+        </Link>
+      </div>
+
       {/* Main Content */}
       <main className="relative z-10 px-4 py-12 md:py-20">
         <div className="max-w-6xl mx-auto text-center">
