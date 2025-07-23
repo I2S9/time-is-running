@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import AuthButtons from '../components/AuthButtons';
 
 export default function AboutPage() {
   return (
@@ -17,14 +18,7 @@ export default function AboutPage() {
                  style={{ fontFamily: 'var(--font-playfull-daily)' }}>FUTURE</Link>
               <Link href="/about" className="text-lg md:text-xl font-bold text-[#B2E4F6] hover:text-gray-600 transition-colors py-2 cursor-pointer"
                  style={{ fontFamily: 'var(--font-playfull-daily)' }}>ABOUT US</Link>
-              <button className="bg-black text-white px-6 py-2 rounded-full text-base md:text-lg font-bold hover:bg-gray-800 transition-colors cursor-pointer"
-                      style={{ fontFamily: 'var(--font-playfull-daily)' }}>
-                LOG IN
-              </button>
-              <button className="bg-black text-white px-6 py-2 rounded-full text-base md:text-lg font-bold hover:bg-gray-800 transition-colors cursor-pointer"
-                      style={{ fontFamily: 'var(--font-playfull-daily)' }}>
-                SIGN UP
-              </button>
+              <AuthButtons />
             </div>
           </div>
         </nav>
