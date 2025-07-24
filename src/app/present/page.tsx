@@ -89,10 +89,12 @@ export default function PresentPage() {
                 </p>
               </div>
               <div className="relative inline-block w-full">
-                <button className="bg-[#B2E4F6] text-black px-8 py-4 rounded-full text-lg font-bold transform hover:scale-105 hover:bg-[#1e3a8a] hover:text-white active:scale-95 active:bg-gray-400 active:text-gray-600 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed disabled:transform-none transition-all duration-150 relative z-10 push-button-blue cursor-pointer w-full"
-                        style={{ fontFamily: 'var(--font-playfull-daily)' }}>
-                  GET STARTED
-                </button>
+                <Link href="/todo">
+                  <button className="bg-[#B2E4F6] text-black px-8 py-4 rounded-full text-lg font-bold transform hover:scale-105 hover:bg-[#1e3a8a] hover:text-white active:scale-95 active:bg-gray-400 active:text-gray-600 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed disabled:transform-none transition-all duration-150 relative z-10 push-button-blue cursor-pointer w-full"
+                          style={{ fontFamily: 'var(--font-playfull-daily)' }}>
+                    GET STARTED
+                  </button>
+                </Link>
                 <div className="absolute top-2 left-0 w-full h-full bg-[#8BC5D6] rounded-full -z-10 transition-all duration-150 push-shadow"></div>
               </div>
             </div>
