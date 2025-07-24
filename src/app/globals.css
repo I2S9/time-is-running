@@ -134,7 +134,7 @@ body {
   }
 }
 
-/* Button push effect - Duolingo style */
+/* Button push effect - Yellow style (default) */
 .push-button {
   position: relative;
   transition: all 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -156,6 +156,28 @@ body {
 }
 
 .push-button:active + .push-shadow {
+  top: 0;
+  transform: scale(0.98);
+}
+
+/* Button push effect - Blue style (for Present page) */
+.push-button-blue {
+  position: relative;
+  transition: all 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  box-shadow: 0 4px 0 #8BC5D6;
+}
+
+.push-button-blue:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 #8BC5D6;
+}
+
+.push-button-blue:active {
+  transform: translateY(2px);
+  box-shadow: 0 0 0 #8BC5D6;
+}
+
+.push-button-blue:active + .push-shadow {
   top: 0;
   transform: scale(0.98);
 }

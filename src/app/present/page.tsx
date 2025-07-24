@@ -60,13 +60,99 @@ export default function PresentPage() {
       {/* Main Content */}
       <main className="relative z-10 px-4 py-8 md:py-16">
         <div className="max-w-6xl mx-auto text-center">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-black"
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-black mb-12"
               style={{
                 fontFamily: 'var(--font-playfull-daily)',
                 textShadow: '4px 4px 0px white, -4px -4px 0px white, 4px -4px 0px white, -4px 4px 0px white, 2px 2px 0px white, -2px -2px 0px white, 2px -2px 0px white, -2px 2px 0px white'
               }}>
             PRESENT
           </h1>
+
+          {/* Three Feature Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {/* To-Do List Card */}
+            <div className="bg-white rounded-2xl p-12 shadow-lg hover:shadow-xl transition-shadow min-h-[500px] flex flex-col">
+              <div className="text-center mb-8 flex-grow">
+                <Image
+                  src="/images/clock-character.png"
+                  alt="Clock Character"
+                  width={150}
+                  height={150}
+                  className="w-32 h-32 mx-auto mb-6"
+                />
+                <h3 className="text-3xl font-bold text-black mb-4"
+                    style={{ fontFamily: 'var(--font-playfull-daily)' }}>
+                  TO-DO LIST
+                </h3>
+                <p className="text-gray-600 mb-8 text-lg leading-relaxed">
+                  Organize your tasks and stay focused on what matters most right now.
+                </p>
+              </div>
+              <div className="relative inline-block w-full">
+                <button className="bg-[#B2E4F6] text-black px-8 py-4 rounded-full text-lg font-bold transform hover:scale-105 hover:bg-[#1e3a8a] hover:text-white active:scale-95 active:bg-gray-400 active:text-gray-600 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed disabled:transform-none transition-all duration-150 relative z-10 push-button-blue cursor-pointer w-full"
+                        style={{ fontFamily: 'var(--font-playfull-daily)' }}>
+                  GET STARTED
+                </button>
+                <div className="absolute top-2 left-0 w-full h-full bg-[#8BC5D6] rounded-full -z-10 transition-all duration-150 push-shadow"></div>
+              </div>
+            </div>
+
+            {/* Pomodoro Timer Card */}
+            <div className="bg-white rounded-2xl p-12 shadow-lg hover:shadow-xl transition-shadow min-h-[500px] flex flex-col">
+              <div className="text-center mb-8 flex-grow">
+                <Image
+                  src="/images/clock-pomodoro.png"
+                  alt="Clock Pomodoro"
+                  width={150}
+                  height={150}
+                  className="w-32 h-32 mx-auto mb-6"
+                />
+                <h3 className="text-3xl font-bold text-black mb-4"
+                    style={{ fontFamily: 'var(--font-playfull-daily)' }}>
+                  POMODORO TIMER
+                </h3>
+                <p className="text-gray-600 mb-8 text-lg leading-relaxed">
+                  Boost your productivity with focused work sessions and strategic breaks.
+                </p>
+              </div>
+              <div className="relative inline-block w-full">
+                <Link href="/pomodoro">
+                  <button className="bg-[#B2E4F6] text-black px-8 py-4 rounded-full text-lg font-bold transform hover:scale-105 hover:bg-[#1e3a8a] hover:text-white active:scale-95 active:bg-gray-400 active:text-gray-600 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed disabled:transform-none transition-all duration-150 relative z-10 push-button-blue cursor-pointer w-full"
+                          style={{ fontFamily: 'var(--font-playfull-daily)' }}>
+                    START TIMER
+                  </button>
+                </Link>
+                <div className="absolute top-2 left-0 w-full h-full bg-[#8BC5D6] rounded-full -z-10 transition-all duration-150 push-shadow"></div>
+              </div>
+            </div>
+
+            {/* Time Analysis Card */}
+            <div className="bg-white rounded-2xl p-12 shadow-lg hover:shadow-xl transition-shadow min-h-[500px] flex flex-col">
+              <div className="text-center mb-8 flex-grow">
+                <Image
+                  src="/images/clock-stats.png"
+                  alt="Clock Stats"
+                  width={150}
+                  height={150}
+                  className="w-32 h-32 mx-auto mb-6"
+                />
+                <h3 className="text-3xl font-bold text-black mb-4"
+                    style={{ fontFamily: 'var(--font-playfull-daily)' }}>
+                  TIME ANALYSIS
+                </h3>
+                <p className="text-gray-600 mb-8 text-lg leading-relaxed">
+                  Track and analyze how you spend your time to make better decisions.
+                </p>
+              </div>
+              <div className="relative inline-block w-full">
+                <button className="bg-[#B2E4F6] text-black px-8 py-4 rounded-full text-lg font-bold transform hover:scale-105 hover:bg-[#1e3a8a] hover:text-white active:scale-95 active:bg-gray-400 active:text-gray-600 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed disabled:transform-none transition-all duration-150 relative z-10 push-button-blue cursor-pointer w-full"
+                        style={{ fontFamily: 'var(--font-playfull-daily)' }}>
+                  VIEW STATS
+                </button>
+                <div className="absolute top-2 left-0 w-full h-full bg-[#8BC5D6] rounded-full -z-10 transition-all duration-150 push-shadow"></div>
+              </div>
+            </div>
+          </div>
         </div>
       </main>
     </div>
