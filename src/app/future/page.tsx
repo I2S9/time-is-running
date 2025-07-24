@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { SignedIn, SignedOut } from '@clerk/nextjs';
 import AuthButtons from '../components/AuthButtons';
 
 export default function FuturePage() {
@@ -7,21 +8,40 @@ export default function FuturePage() {
     <div className="min-h-screen bg-[#B2E4F6]">
       {/* Header Navigation - Shorter with equidistant elements */}
       <header className="relative z-10 px-8 pt-4">
-        <nav className="bg-white rounded-full mx-auto max-w-3xl p-6 shadow-lg">
-          <div className="flex flex-col md:flex-row justify-center items-center">
-            <div className="flex flex-wrap justify-center md:justify-center w-full gap-8 mb-4 md:mb-0">
-              <Link href="/past" className="text-lg md:text-xl font-bold text-black hover:text-gray-600 transition-colors py-2 cursor-pointer" 
-                 style={{ fontFamily: 'var(--font-playfull-daily)' }}>PAST</Link>
-              <Link href="/present" className="text-lg md:text-xl font-bold text-black hover:text-gray-600 transition-colors py-2 cursor-pointer"
-                 style={{ fontFamily: 'var(--font-playfull-daily)' }}>PRESENT</Link>
-              <Link href="/future" className="text-lg md:text-xl font-bold text-[#B2E4F6] hover:text-gray-600 transition-colors py-2 cursor-pointer"
-                 style={{ fontFamily: 'var(--font-playfull-daily)' }}>FUTURE</Link>
-              <Link href="/about" className="text-lg md:text-xl font-bold text-black hover:text-gray-600 transition-colors py-2 cursor-pointer"
-                 style={{ fontFamily: 'var(--font-playfull-daily)' }}>ABOUT US</Link>
-              <AuthButtons />
+        <SignedOut>
+          <nav className="bg-white rounded-full mx-auto max-w-3xl p-6 shadow-lg">
+            <div className="flex flex-col md:flex-row justify-center items-center">
+              <div className="flex flex-wrap justify-center md:justify-center w-full gap-8 mb-4 md:mb-0">
+                <Link href="/past" className="text-lg md:text-xl font-bold text-black hover:text-gray-600 transition-colors py-2 cursor-pointer" 
+                   style={{ fontFamily: 'var(--font-playfull-daily)' }}>PAST</Link>
+                <Link href="/present" className="text-lg md:text-xl font-bold text-black hover:text-gray-600 transition-colors py-2 cursor-pointer"
+                   style={{ fontFamily: 'var(--font-playfull-daily)' }}>PRESENT</Link>
+                <Link href="/future" className="text-lg md:text-xl font-bold text-[#B2E4F6] hover:text-gray-600 transition-colors py-2 cursor-pointer"
+                   style={{ fontFamily: 'var(--font-playfull-daily)' }}>FUTURE</Link>
+                <Link href="/about" className="text-lg md:text-xl font-bold text-black hover:text-gray-600 transition-colors py-2 cursor-pointer"
+                   style={{ fontFamily: 'var(--font-playfull-daily)' }}>ABOUT US</Link>
+                <AuthButtons />
+              </div>
             </div>
-          </div>
-        </nav>
+          </nav>
+        </SignedOut>
+        <SignedIn>
+          <nav className="bg-white rounded-full mx-auto max-w-lg p-6 shadow-lg">
+            <div className="flex flex-col md:flex-row justify-center items-center">
+              <div className="flex flex-wrap justify-center md:justify-center w-full gap-8 mb-4 md:mb-0">
+                <Link href="/past" className="text-lg md:text-xl font-bold text-black hover:text-gray-600 transition-colors py-2 cursor-pointer" 
+                   style={{ fontFamily: 'var(--font-playfull-daily)' }}>PAST</Link>
+                <Link href="/present" className="text-lg md:text-xl font-bold text-black hover:text-gray-600 transition-colors py-2 cursor-pointer"
+                   style={{ fontFamily: 'var(--font-playfull-daily)' }}>PRESENT</Link>
+                <Link href="/future" className="text-lg md:text-xl font-bold text-[#B2E4F6] hover:text-gray-600 transition-colors py-2 cursor-pointer"
+                   style={{ fontFamily: 'var(--font-playfull-daily)' }}>FUTURE</Link>
+                <Link href="/about" className="text-lg md:text-xl font-bold text-black hover:text-gray-600 transition-colors py-2 cursor-pointer"
+                   style={{ fontFamily: 'var(--font-playfull-daily)' }}>ABOUT US</Link>
+                <AuthButtons />
+              </div>
+            </div>
+          </nav>
+        </SignedIn>
       </header>
 
       {/* Alarm Clock Icon - Top Left */}
