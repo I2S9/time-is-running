@@ -38,9 +38,9 @@ export default function FuturePage() {
       </div>
 
       {/* Main Content */}
-      <main className="relative z-10 px-4 py-20 md:py-32">
+      <main className="relative z-10 px-4 py-8 md:py-16">
         <div className="max-w-6xl mx-auto text-center">
-          <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold text-black"
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-black"
               style={{
                 fontFamily: 'var(--font-playfull-daily)',
                 textShadow: '4px 4px 0px white, -4px -4px 0px white, 4px -4px 0px white, -4px 4px 0px white, 2px 2px 0px white, -2px -2px 0px white, 2px -2px 0px white, -2px 2px 0px white'
