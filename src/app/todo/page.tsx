@@ -19,19 +19,26 @@ export default function TodoPage() {
   const [estimatedTime, setEstimatedTime] = useState(30);
   const [maxSessionTime, setMaxSessionTime] = useState(120);
   const [showAddForm, setShowAddForm] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const addTask = () => {
     if (newTask.trim()) {
-      const task: Task = {
-        id: Date.now(),
-        text: newTask.trim(),
-        estimatedTime: estimatedTime,
-        completed: false
-      };
-      setTasks([...tasks, task]);
-      setNewTask('');
-      setEstimatedTime(30);
-      setShowAddForm(false);
+      setIsLoading(true);
+      
+      // Simulate loading time
+      setTimeout(() => {
+        const task: Task = {
+          id: Date.now(),
+          text: newTask.trim(),
+          estimatedTime: estimatedTime,
+          completed: false
+        };
+        setTasks([...tasks, task]);
+        setNewTask('');
+        setEstimatedTime(30);
+        setShowAddForm(false);
+        setIsLoading(false);
+      }, 1000); // 1 second loading time
     }
   };
 
@@ -128,10 +135,15 @@ export default function TodoPage() {
               <div className="text-center">
                 <button 
                   onClick={() => setShowAddForm(true)}
-                  className="bg-[#B2E4F6] text-black px-8 py-4 rounded-full text-lg font-bold transform hover:scale-105 hover:bg-[#1e3a8a] hover:text-white active:scale-95 transition-all duration-150"
+                  className={`px-8 py-4 rounded-full text-lg font-bold transform transition-all duration-150 ${
+                    isLoading 
+                      ? 'bg-gray-400 text-gray-600 cursor-not-allowed scale-95' 
+                      : 'bg-[#B2E4F6] text-black hover:scale-105 hover:bg-[#1e3a8a] hover:text-white active:scale-95'
+                  }`}
+                  disabled={isLoading}
                   style={{ fontFamily: 'var(--font-playfull-daily)' }}
                 >
-                  + ADD TASK
+                  {isLoading ? '+ ADD TASK...' : '+ ADD TASK'}
                 </button>
               </div>
             ) : (
@@ -181,17 +193,27 @@ export default function TodoPage() {
                 <div className="flex gap-4 pt-4">
                   <button 
                     onClick={() => setShowAddForm(false)}
-                    className="flex-1 bg-gray-300 text-black px-6 py-3 rounded-full text-lg font-bold transform hover:scale-105 hover:bg-gray-400 transition-all duration-150"
+                    className={`flex-1 px-6 py-3 rounded-full text-lg font-bold transform transition-all duration-150 ${
+                      isLoading 
+                        ? 'bg-gray-400 text-gray-600 cursor-not-allowed scale-95' 
+                        : 'bg-gray-300 text-black hover:scale-105 hover:bg-gray-400'
+                    }`}
+                    disabled={isLoading}
                     style={{ fontFamily: 'var(--font-playfull-daily)' }}
                   >
-                    CANCEL
+                    {isLoading ? 'CANCEL...' : 'CANCEL'}
                   </button>
                   <button 
                     onClick={addTask}
-                    className="flex-1 bg-[#B2E4F6] text-black px-6 py-3 rounded-full text-lg font-bold transform hover:scale-105 hover:bg-[#1e3a8a] hover:text-white transition-all duration-150"
+                    className={`flex-1 px-6 py-3 rounded-full text-lg font-bold transform transition-all duration-150 ${
+                      isLoading 
+                        ? 'bg-gray-400 text-gray-600 cursor-not-allowed scale-95' 
+                        : 'bg-[#B2E4F6] text-black hover:scale-105 hover:bg-[#1e3a8a] hover:text-white'
+                    }`}
+                    disabled={isLoading}
                     style={{ fontFamily: 'var(--font-playfull-daily)' }}
                   >
-                    ADD TASK
+                    {isLoading ? 'ADD TASK...' : 'ADD TASK'}
                   </button>
                 </div>
               </div>
@@ -265,9 +287,16 @@ export default function TodoPage() {
           {/* Back to Present Button */}
           <div className="text-center">
             <Link href="/present">
-              <button className="bg-gray-300 text-black px-8 py-4 rounded-full text-lg font-bold transform hover:scale-105 hover:bg-gray-400 transition-all duration-150"
-                      style={{ fontFamily: 'var(--font-playfull-daily)' }}>
-                GO BACK TO PRESENT
+              <button 
+                className={`px-8 py-4 rounded-full text-lg font-bold transform transition-all duration-150 ${
+                  isLoading 
+                    ? 'bg-gray-400 text-gray-600 cursor-not-allowed scale-95' 
+                    : 'bg-gray-300 text-black hover:scale-105 hover:bg-gray-400'
+                }`}
+                disabled={isLoading}
+                style={{ fontFamily: 'var(--font-playfull-daily)' }}
+              >
+                {isLoading ? 'GO BACK TO PRESENT...' : 'GO BACK TO PRESENT'}
               </button>
             </Link>
           </div>

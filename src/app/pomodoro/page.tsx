@@ -9,13 +9,19 @@ import { useEffect, useState } from 'react';
 export default function PomodoroPage() {
   const [showCustomPopup, setShowCustomPopup] = useState(false);
   const [customMinutes, setCustomMinutes] = useState(30);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleCustomClick = () => {
     setShowCustomPopup(true);
   };
 
   const handleCustomConfirm = () => {
-    window.location.href = `/pomodoro/timer?duration=${customMinutes}&custom=${customMinutes}`;
+    setIsLoading(true);
+    
+    // Simulate loading time
+    setTimeout(() => {
+      window.location.href = `/pomodoro/timer?duration=${customMinutes}&custom=${customMinutes}`;
+    }, 1000); // 1 second loading time
   };
 
   const handleCustomCancel = () => {
@@ -112,28 +118,50 @@ export default function PomodoroPage() {
             {/* Timer Options */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
               <Link href="/pomodoro/timer?duration=25">
-                <button className="bg-[#B2E4F6] text-black px-6 py-4 rounded-full text-lg font-bold transform hover:scale-105 hover:bg-[#1e3a8a] hover:text-white active:scale-95 active:bg-gray-400 active:text-gray-600 transition-all duration-150 w-full"
+                <button className={`px-6 py-4 rounded-full text-lg font-bold transform transition-all duration-150 w-full ${
+                  isLoading 
+                    ? 'bg-gray-400 text-gray-600 cursor-not-allowed scale-95' 
+                    : 'bg-[#B2E4F6] text-black hover:scale-105 hover:bg-[#1e3a8a] hover:text-white active:scale-95 active:bg-gray-400 active:text-gray-600'
+                }`}
+                        disabled={isLoading}
                         style={{ fontFamily: 'var(--font-playfull-daily)' }}>
-                  25 MINUTES
+                  {isLoading ? '25 MINUTES...' : '25 MINUTES'}
                 </button>
               </Link>
               <Link href="/pomodoro/timer?duration=45">
-                <button className="bg-[#B2E4F6] text-black px-6 py-4 rounded-full text-lg font-bold transform hover:scale-105 hover:bg-[#1e3a8a] hover:text-white active:scale-95 active:bg-gray-400 active:text-gray-600 transition-all duration-150 w-full"
+                <button className={`px-6 py-4 rounded-full text-lg font-bold transform transition-all duration-150 w-full ${
+                  isLoading 
+                    ? 'bg-gray-400 text-gray-600 cursor-not-allowed scale-95' 
+                    : 'bg-[#B2E4F6] text-black hover:scale-105 hover:bg-[#1e3a8a] hover:text-white active:scale-95 active:bg-gray-400 active:text-gray-600'
+                }`}
+                        disabled={isLoading}
                         style={{ fontFamily: 'var(--font-playfull-daily)' }}>
-                  45 MINUTES
+                  {isLoading ? '45 MINUTES...' : '45 MINUTES'}
                 </button>
               </Link>
               <button onClick={handleCustomClick}
-                className="bg-[#B2E4F6] text-black px-6 py-4 rounded-full text-lg font-bold transform hover:scale-105 hover:bg-[#1e3a8a] hover:text-white active:scale-95 active:bg-gray-400 active:text-gray-600 transition-all duration-150 w-full"
+                className={`px-6 py-4 rounded-full text-lg font-bold transform transition-all duration-150 w-full ${
+                  isLoading 
+                    ? 'bg-gray-400 text-gray-600 cursor-not-allowed scale-95' 
+                    : 'bg-[#B2E4F6] text-black hover:scale-105 hover:bg-[#1e3a8a] hover:text-white active:scale-95 active:bg-gray-400 active:text-gray-600'
+                }`}
+                disabled={isLoading}
                 style={{ fontFamily: 'var(--font-playfull-daily)' }}>
-                CUSTOM
+                {isLoading ? 'CUSTOM...' : 'CUSTOM'}
               </button>
             </div>
 
             <Link href="/present">
-              <button className="bg-gray-300 text-black px-8 py-4 rounded-full text-lg font-bold transform hover:scale-105 hover:bg-gray-400 transition-all duration-150"
-                      style={{ fontFamily: 'var(--font-playfull-daily)' }}>
-                GO BACK TO PRESENT
+              <button 
+                className={`px-8 py-4 rounded-full text-lg font-bold transform transition-all duration-150 ${
+                  isLoading 
+                    ? 'bg-gray-400 text-gray-600 cursor-not-allowed scale-95' 
+                    : 'bg-gray-300 text-black hover:scale-105 hover:bg-gray-400'
+                }`}
+                disabled={isLoading}
+                style={{ fontFamily: 'var(--font-playfull-daily)' }}
+              >
+                {isLoading ? 'GO BACK TO PRESENT...' : 'GO BACK TO PRESENT'}
               </button>
             </Link>
           </div>
@@ -189,17 +217,27 @@ export default function PomodoroPage() {
             <div className="flex gap-4">
               <button
                 onClick={handleCustomCancel}
-                className="flex-1 bg-gray-300 text-black px-6 py-3 rounded-full text-lg font-bold transform hover:scale-105 hover:bg-gray-400 transition-all duration-150"
+                className={`flex-1 px-6 py-3 rounded-full text-lg font-bold transform transition-all duration-150 ${
+                  isLoading 
+                    ? 'bg-gray-400 text-gray-600 cursor-not-allowed scale-95' 
+                    : 'bg-gray-300 text-black hover:scale-105 hover:bg-gray-400'
+                }`}
+                disabled={isLoading}
                 style={{ fontFamily: 'var(--font-playfull-daily)' }}
               >
-                CANCEL
+                {isLoading ? 'CANCEL...' : 'CANCEL'}
               </button>
               <button
                 onClick={handleCustomConfirm}
-                className="flex-1 bg-[#B2E4F6] text-black px-6 py-3 rounded-full text-lg font-bold transform hover:scale-105 hover:bg-[#1e3a8a] hover:text-white transition-all duration-150"
+                className={`flex-1 px-6 py-3 rounded-full text-lg font-bold transform transition-all duration-150 ${
+                  isLoading 
+                    ? 'bg-gray-400 text-gray-600 cursor-not-allowed scale-95' 
+                    : 'bg-[#B2E4F6] text-black hover:scale-105 hover:bg-[#1e3a8a] hover:text-white'
+                }`}
+                disabled={isLoading}
                 style={{ fontFamily: 'var(--font-playfull-daily)' }}
               >
-                START
+                {isLoading ? 'START...' : 'START'}
               </button>
             </div>
           </div>
