@@ -55,11 +55,11 @@ export default function QuizPage() {
       id: 'eating',
       question: 'How much time do you spend eating?',
       options: [
+        { text: '5 minutes for pasta box', value: 0.25 },
         { text: '5-15 minutes (quick meals)', value: 0.25 },
         { text: '15-30 minutes (normal pace)', value: 0.5 },
         { text: '30-45 minutes (enjoying food)', value: 0.75 },
         { text: '45+ minutes (foodie)', value: 1 },
-        { text: '5 minutes for pasta box', value: 0.25 },
         { text: 'No time to eat, I grind', value: 0.25 }
       ]
     },
@@ -434,164 +434,272 @@ export default function QuizPage() {
       );
     }
 
-    if (showDailyBreakdown) {
-      return (
-        <div className="min-h-screen bg-[#B2E4F6] relative overflow-hidden">
-          {/* Back to Home Link */}
-          <div className="absolute top-6 left-8 z-20">
-            <Link href="/" className="block hover:scale-110 transition-transform duration-200">
-              <Image
-                src="/images/clock.png"
-                alt="Alarm Clock - Home"
-                width={60}
-                height={60}
-                className="w-10 h-10 md:w-12 md:h-12 lg:w-14 lg:h-14"
-              />
-            </Link>
-          </div>
+               if (showDailyBreakdown) {
+             const sleepTime = answers.find(a => a.questionId === 'sleep')?.value || 0;
+             const showerTime = answers.find(a => a.questionId === 'shower')?.value || 0;
+             const eatingTime = answers.find(a => a.questionId === 'eating')?.value || 0;
+             const exerciseTime = answers.find(a => a.questionId === 'exercise')?.value || 0;
+             const phoneTime = answers.find(a => a.questionId === 'phone')?.value || 0;
+             const socialTime = answers.find(a => a.questionId === 'social_media')?.value || 0;
+             const procrastinationTime = answers.find(a => a.questionId === 'procrastination')?.value || 0;
+             const workWasteTime = answers.find(a => a.questionId === 'work')?.value || 0;
 
-          <div className="relative z-10 px-4 py-8">
-            <div className="max-w-6xl mx-auto">
-              <div className="text-center mb-8">
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-black mb-4"
-                    style={{
-                      fontFamily: 'var(--font-playfull-daily)',
-                      textShadow: '4px 4px 0px white, -4px -4px 0px white, 4px -4px 0px white, -4px 4px 0px white'
-                    }}>
-                  Your Daily Time Breakdown
-                </h1>
-              </div>
+             const unavoidableTasks = sleepTime + showerTime + eatingTime + exerciseTime;
+             const completelyWasted = phoneTime + socialTime + procrastinationTime + workWasteTime;
+             const freeTime = 24 - dailyProductive - unavoidableTasks - completelyWasted;
 
-              <div className="bg-white rounded-2xl p-8 shadow-lg mb-8">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                  {/* Pie Chart */}
-                  <div className="space-y-6">
-                    <h3 className="text-2xl font-bold text-black text-center" style={{ fontFamily: 'var(--font-playfull-daily)' }}>
-                      Daily Time Distribution
-                    </h3>
-                    <div className="flex justify-center">
-                      <div className="relative w-64 h-64">
-                        {/* Pie Chart SVG */}
-                        <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
-                          <circle
-                            cx="50"
-                            cy="50"
-                            r="40"
-                            fill="none"
-                            stroke="#E5E7EB"
-                            strokeWidth="20"
-                          />
-                          <circle
-                            cx="50"
-                            cy="50"
-                            r="40"
-                            fill="none"
-                            stroke="#10B981"
-                            strokeWidth="20"
-                            strokeDasharray={`${(dailyProductive / 24) * 251.2} 251.2`}
-                            strokeDashoffset="0"
-                          />
-                          <circle
-                            cx="50"
-                            cy="50"
-                            r="40"
-                            fill="none"
-                            stroke="#EF4444"
-                            strokeWidth="20"
-                            strokeDasharray={`${(dailyWasted / 24) * 251.2} 251.2`}
-                            strokeDashoffset={`-${(dailyProductive / 24) * 251.2}`}
-                          />
-                          <circle
-                            cx="50"
-                            cy="50"
-                            r="40"
-                            fill="none"
-                            stroke="#3B82F6"
-                            strokeWidth="20"
-                            strokeDasharray={`${((24 - dailyProductive - dailyWasted) / 24) * 251.2} 251.2`}
-                            strokeDashoffset={`-${((dailyProductive + dailyWasted) / 24) * 251.2}`}
-                          />
-                        </svg>
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <div className="text-center">
-                            <div className="text-2xl font-bold text-black">24h</div>
-                            <div className="text-sm text-gray-600">Total</div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+             return (
+               <div className="min-h-screen bg-[#B2E4F6] relative overflow-hidden flex items-center justify-center">
+                 {/* Back to Home Link */}
+                 <div className="absolute top-6 left-8 z-20">
+                   <Link href="/" className="block hover:scale-110 transition-transform duration-200">
+                     <Image
+                       src="/images/clock.png"
+                       alt="Alarm Clock - Home"
+                       width={60}
+                       height={60}
+                       className="w-10 h-10 md:w-12 md:h-12 lg:w-14 lg:h-14"
+                     />
+                   </Link>
+                 </div>
 
-                  {/* Bar Chart */}
-                  <div className="space-y-6">
-                    <h3 className="text-2xl font-bold text-black text-center" style={{ fontFamily: 'var(--font-playfull-daily)' }}>
-                      Time Breakdown
-                    </h3>
-                    <div className="space-y-4">
-                      <div>
-                        <div className="flex justify-between mb-2">
-                          <span className="font-semibold text-green-600">Productive</span>
-                          <span className="font-semibold">{dailyProductive.toFixed(1)}h</span>
-                        </div>
-                        <div className="w-full bg-gray-200 rounded-full h-4">
-                          <div 
-                            className="bg-green-500 h-4 rounded-full transition-all duration-500"
-                            style={{ width: `${(dailyProductive / 24) * 100}%` }}
-                          ></div>
-                        </div>
-                      </div>
-                      
-                      <div>
-                        <div className="flex justify-between mb-2">
-                          <span className="font-semibold text-red-600">Wasted</span>
-                          <span className="font-semibold">{dailyWasted.toFixed(1)}h</span>
-                        </div>
-                        <div className="w-full bg-gray-200 rounded-full h-4">
-                          <div 
-                            className="bg-red-500 h-4 rounded-full transition-all duration-500"
-                            style={{ width: `${(dailyWasted / 24) * 100}%` }}
-                          ></div>
-                        </div>
-                      </div>
-                      
-                      <div>
-                        <div className="flex justify-between mb-2">
-                          <span className="font-semibold text-blue-600">Other</span>
-                          <span className="font-semibold">{(24 - dailyProductive - dailyWasted).toFixed(1)}h</span>
-                        </div>
-                        <div className="w-full bg-gray-200 rounded-full h-4">
-                          <div 
-                            className="bg-blue-500 h-4 rounded-full transition-all duration-500"
-                            style={{ width: `${((24 - dailyProductive - dailyWasted) / 24) * 100}%` }}
-                          ></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+                 <div className="relative z-10 px-4 py-8 w-full max-w-6xl">
+                   <div className="text-center mb-8">
+                     <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-black mb-4"
+                         style={{
+                           fontFamily: 'var(--font-playfull-daily)',
+                           textShadow: '4px 4px 0px white, -4px -4px 0px white, 4px -4px 0px white, -4px 4px 0px white'
+                         }}>
+                       Your Daily Time Breakdown
+                     </h1>
+                   </div>
 
-              <div className="text-center space-x-4">
-                <button
-                  onClick={() => setShowDailyBreakdown(false)}
-                  className="bg-[#F5F184] text-[#AFA20C] px-6 py-3 rounded-full font-bold hover:scale-105 transition-all duration-150"
-                  style={{ fontFamily: 'var(--font-playfull-daily)' }}
-                >
-                  Back to Analysis
-                </button>
-                <Link
-                  href="/present"
-                  className="inline-block bg-[#B2E4F6] text-white px-6 py-3 rounded-full font-bold hover:scale-105 transition-all duration-150"
-                  style={{ fontFamily: 'var(--font-playfull-daily)' }}
-                >
-                  Start Managing Time
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      );
-    }
+                   <div className="bg-white rounded-2xl p-8 shadow-lg mb-8 max-w-4xl mx-auto">
+                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                       {/* Interactive Pie Chart */}
+                       <div className="space-y-6">
+                         <h3 className="text-2xl font-bold text-black text-center" style={{ fontFamily: 'var(--font-playfull-daily)' }}>
+                           Daily Time Distribution
+                         </h3>
+                         <div className="flex justify-center">
+                           <div className="relative w-64 h-64">
+                             {/* Interactive Pie Chart SVG */}
+                             <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                               {/* Productive Time - Light Green */}
+                               <circle
+                                 cx="50"
+                                 cy="50"
+                                 r="40"
+                                 fill="none"
+                                 stroke="#A7F3D0"
+                                 strokeWidth="20"
+                                 strokeDasharray={`${(dailyProductive / 24) * 251.2} 251.2`}
+                                 strokeDashoffset="0"
+                                 className="cursor-pointer hover:stroke-[#10B981] transition-colors"
+                                 onMouseEnter={() => {
+                                   const tooltip = document.getElementById('pie-tooltip');
+                                   if (tooltip) {
+                                     tooltip.textContent = `Productive Time: ${dailyProductive.toFixed(1)}h`;
+                                     tooltip.style.display = 'block';
+                                   }
+                                 }}
+                                 onMouseLeave={() => {
+                                   const tooltip = document.getElementById('pie-tooltip');
+                                   if (tooltip) tooltip.style.display = 'none';
+                                 }}
+                               />
+                               {/* Unavoidable Tasks - Light Blue */}
+                               <circle
+                                 cx="50"
+                                 cy="50"
+                                 r="40"
+                                 fill="none"
+                                 stroke="#BFDBFE"
+                                 strokeWidth="20"
+                                 strokeDasharray={`${(unavoidableTasks / 24) * 251.2} 251.2`}
+                                 strokeDashoffset={`-${(dailyProductive / 24) * 251.2}`}
+                                 className="cursor-pointer hover:stroke-[#3B82F6] transition-colors"
+                                 onMouseEnter={() => {
+                                   const tooltip = document.getElementById('pie-tooltip');
+                                   if (tooltip) {
+                                     tooltip.textContent = `Unavoidable Tasks: ${unavoidableTasks.toFixed(1)}h (Sleep, Shower, Eating, Exercise)`;
+                                     tooltip.style.display = 'block';
+                                   }
+                                 }}
+                                 onMouseLeave={() => {
+                                   const tooltip = document.getElementById('pie-tooltip');
+                                   if (tooltip) tooltip.style.display = 'none';
+                                 }}
+                               />
+                               {/* Completely Wasted - Light Red */}
+                               <circle
+                                 cx="50"
+                                 cy="50"
+                                 r="40"
+                                 fill="none"
+                                 stroke="#FECACA"
+                                 strokeWidth="20"
+                                 strokeDasharray={`${(completelyWasted / 24) * 251.2} 251.2`}
+                                 strokeDashoffset={`-${((dailyProductive + unavoidableTasks) / 24) * 251.2}`}
+                                 className="cursor-pointer hover:stroke-[#EF4444] transition-colors"
+                                 onMouseEnter={() => {
+                                   const tooltip = document.getElementById('pie-tooltip');
+                                   if (tooltip) {
+                                     tooltip.textContent = `Completely Wasted: ${completelyWasted.toFixed(1)}h (Phone, Social Media, Procrastination)`;
+                                     tooltip.style.display = 'block';
+                                   }
+                                 }}
+                                 onMouseLeave={() => {
+                                   const tooltip = document.getElementById('pie-tooltip');
+                                   if (tooltip) tooltip.style.display = 'none';
+                                 }}
+                               />
+                               {/* Free Time - Light Yellow */}
+                               <circle
+                                 cx="50"
+                                 cy="50"
+                                 r="40"
+                                 fill="none"
+                                 stroke="#FEF3C7"
+                                 strokeWidth="20"
+                                 strokeDasharray={`${(freeTime / 24) * 251.2} 251.2`}
+                                 strokeDashoffset={`-${((dailyProductive + unavoidableTasks + completelyWasted) / 24) * 251.2}`}
+                                 className="cursor-pointer hover:stroke-[#F59E0B] transition-colors"
+                                 onMouseEnter={() => {
+                                   const tooltip = document.getElementById('pie-tooltip');
+                                   if (tooltip) {
+                                     tooltip.textContent = `Free Time: ${freeTime.toFixed(1)}h (Time you can control)`;
+                                     tooltip.style.display = 'block';
+                                   }
+                                 }}
+                                 onMouseLeave={() => {
+                                   const tooltip = document.getElementById('pie-tooltip');
+                                   if (tooltip) tooltip.style.display = 'none';
+                                 }}
+                               />
+                             </svg>
+                             <div className="absolute inset-0 flex items-center justify-center">
+                               <div className="text-center">
+                                 <div className="text-2xl font-bold text-black">24h</div>
+                                 <div className="text-sm text-gray-600">Total</div>
+                               </div>
+                             </div>
+                             {/* Tooltip */}
+                             <div
+                               id="pie-tooltip"
+                               className="absolute -top-12 left-1/2 transform -translate-x-1/2 bg-black text-white px-3 py-2 rounded-lg text-sm whitespace-nowrap hidden z-10"
+                               style={{ fontFamily: 'var(--font-playfull-daily)' }}
+                             >
+                               Hover over sections
+                             </div>
+                           </div>
+                         </div>
+                         
+                         {/* Legend */}
+                         <div className="grid grid-cols-2 gap-4 text-sm">
+                           <div className="flex items-center space-x-2">
+                             <div className="w-4 h-4 bg-[#A7F3D0] rounded"></div>
+                             <span>Productive</span>
+                           </div>
+                           <div className="flex items-center space-x-2">
+                             <div className="w-4 h-4 bg-[#BFDBFE] rounded"></div>
+                             <span>Unavoidable</span>
+                           </div>
+                           <div className="flex items-center space-x-2">
+                             <div className="w-4 h-4 bg-[#FECACA] rounded"></div>
+                             <span>Wasted</span>
+                           </div>
+                           <div className="flex items-center space-x-2">
+                             <div className="w-4 h-4 bg-[#FEF3C7] rounded"></div>
+                             <span>Free Time</span>
+                           </div>
+                         </div>
+                       </div>
+
+                       {/* Detailed Bar Chart */}
+                       <div className="space-y-6">
+                         <h3 className="text-2xl font-bold text-black text-center" style={{ fontFamily: 'var(--font-playfull-daily)' }}>
+                           Detailed Breakdown
+                         </h3>
+                         <div className="space-y-4">
+                           <div>
+                             <div className="flex justify-between mb-2">
+                               <span className="font-semibold text-[#10B981]">Productive Time</span>
+                               <span className="font-semibold">{dailyProductive.toFixed(1)}h</span>
+                             </div>
+                             <div className="w-full bg-gray-200 rounded-full h-4">
+                               <div
+                                 className="bg-[#A7F3D0] h-4 rounded-full transition-all duration-500"
+                                 style={{ width: `${(dailyProductive / 24) * 100}%` }}
+                               ></div>
+                             </div>
+                           </div>
+
+                           <div>
+                             <div className="flex justify-between mb-2">
+                               <span className="font-semibold text-[#3B82F6]">Unavoidable Tasks</span>
+                               <span className="font-semibold">{unavoidableTasks.toFixed(1)}h</span>
+                             </div>
+                             <div className="w-full bg-gray-200 rounded-full h-4">
+                               <div
+                                 className="bg-[#BFDBFE] h-4 rounded-full transition-all duration-500"
+                                 style={{ width: `${(unavoidableTasks / 24) * 100}%` }}
+                               ></div>
+                             </div>
+                           </div>
+
+                           <div>
+                             <div className="flex justify-between mb-2">
+                               <span className="font-semibold text-[#EF4444]">Completely Wasted</span>
+                               <span className="font-semibold">{completelyWasted.toFixed(1)}h</span>
+                             </div>
+                             <div className="w-full bg-gray-200 rounded-full h-4">
+                               <div
+                                 className="bg-[#FECACA] h-4 rounded-full transition-all duration-500"
+                                 style={{ width: `${(completelyWasted / 24) * 100}%` }}
+                               ></div>
+                             </div>
+                           </div>
+
+                           <div>
+                             <div className="flex justify-between mb-2">
+                               <span className="font-semibold text-[#F59E0B]">Free Time</span>
+                               <span className="font-semibold">{freeTime.toFixed(1)}h</span>
+                             </div>
+                             <div className="w-full bg-gray-200 rounded-full h-4">
+                               <div
+                                 className="bg-[#FEF3C7] h-4 rounded-full transition-all duration-500"
+                                 style={{ width: `${(freeTime / 24) * 100}%` }}
+                               ></div>
+                             </div>
+                           </div>
+                         </div>
+                       </div>
+                     </div>
+
+
+                   </div>
+
+                   <div className="text-center space-x-4">
+                     <button
+                       onClick={() => setShowDailyBreakdown(false)}
+                       className="bg-[#F5F184] text-[#AFA20C] px-6 py-3 rounded-full font-bold hover:scale-105 transition-all duration-150"
+                       style={{ fontFamily: 'var(--font-playfull-daily)' }}
+                     >
+                       Back to Analysis
+                     </button>
+                     <Link
+                       href="/present"
+                       className="inline-block bg-black text-white px-6 py-3 rounded-full font-bold hover:scale-105 transition-all duration-150"
+                       style={{ fontFamily: 'var(--font-playfull-daily)' }}
+                     >
+                       Start Managing Time
+                     </Link>
+                   </div>
+                 </div>
+               </div>
+             );
+           }
   }
 
   const currentQ = questions[currentQuestion];
