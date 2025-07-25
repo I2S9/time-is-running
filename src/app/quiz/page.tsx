@@ -372,15 +372,18 @@ export default function QuizPage() {
               </div>
 
               <div className="text-center space-x-4">
-                <button
-                  onClick={() => setShowTimeline(false)}
-                  className="bg-gray-600 text-white px-6 py-3 rounded-full font-bold hover:scale-105 transition-all duration-150"
+                <Link
+                  href="/present"
+                  className="inline-block bg-black text-white px-6 py-3 rounded-full font-bold hover:scale-105 transition-all duration-150"
                   style={{ fontFamily: 'var(--font-playfull-daily)' }}
                 >
-                  Back to Analysis
-                </button>
+                  Take Control of Your Time
+                </Link>
                 <button
-                  onClick={() => setShowDailyBreakdown(true)}
+                  onClick={() => {
+                    setShowTimeline(false);
+                    setShowDailyBreakdown(true);
+                  }}
                   className="bg-[#F5F184] text-[#AFA20C] px-6 py-3 rounded-full font-bold hover:scale-105 transition-all duration-150"
                   style={{ fontFamily: 'var(--font-playfull-daily)' }}
                 >
