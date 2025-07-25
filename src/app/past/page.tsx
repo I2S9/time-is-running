@@ -1,9 +1,44 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
 import { SignedIn, SignedOut } from '@clerk/nextjs';
 import AuthButtons from '../components/AuthButtons';
+import Calendar from '../components/Calendar';
+import { useState } from 'react';
+
+// Sample journal entries for demonstration
+const sampleJournalEntries = [
+  {
+    id: '1',
+    date: '2024-01-15',
+    timeSpent: '8 hours working, 2 hours reading',
+    mood: 'happy' as const,
+    content: 'Had a productive day at work. Finished the project ahead of schedule and felt really accomplished. Spent some time reading in the evening which was relaxing.'
+  },
+  {
+    id: '2',
+    date: '2024-01-14',
+    timeSpent: '6 hours working, 1 hour exercise, 3 hours with family',
+    mood: 'neutral' as const,
+    content: 'Regular day at work. Did some exercise in the afternoon which felt good. Spent time with family in the evening.'
+  },
+  {
+    id: '3',
+    date: '2024-01-13',
+    timeSpent: '4 hours working, 2 hours gaming, 2 hours cooking',
+    mood: 'sad' as const,
+    content: 'Had a difficult day at work. Some issues with the project made me stressed. Tried to relax with some gaming and cooking.'
+  }
+];
 
 export default function PastPage() {
+  const [journalEntries, setJournalEntries] = useState(sampleJournalEntries);
+
+  const handleDayClick = (date: Date) => {
+    console.log('Day clicked:', date);
+  };
+
   return (
     <div className="min-h-screen bg-[#B2E4F6]">
       {/* Header Navigation - Shorter with equidistant elements */}
@@ -59,14 +94,25 @@ export default function PastPage() {
 
       {/* Main Content */}
       <main className="relative z-10 px-4 py-8 md:py-16">
-        <div className="max-w-6xl mx-auto text-center">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-black"
-              style={{
-                fontFamily: 'var(--font-playfull-daily)',
-                textShadow: '4px 4px 0px white, -4px -4px 0px white, 4px -4px 0px white, -4px 4px 0px white, 2px 2px 0px white, -2px -2px 0px white, 2px -2px 0px white, -2px 2px 0px white'
-              }}>
-            PAST
-          </h1>
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-8">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-black mb-4"
+                style={{
+                  fontFamily: 'var(--font-playfull-daily)',
+                  textShadow: '4px 4px 0px white, -4px -4px 0px white, 4px -4px 0px white, -4px 4px 0px white, 2px 2px 0px white, -2px -2px 0px white, 2px -2px 0px white, -2px 2px 0px white'
+                }}>
+              PAST
+            </h1>
+            <p className="text-lg text-gray-700 max-w-2xl mx-auto">
+              Explore your past days, track your time, and reflect on your journey through your personal journal.
+            </p>
+          </div>
+          
+          {/* Calendar Component */}
+          <Calendar 
+            onDayClick={handleDayClick}
+            journalEntries={journalEntries}
+          />
         </div>
       </main>
     </div>
