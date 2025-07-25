@@ -23,6 +23,8 @@ export default function QuizPage() {
   const [showResults, setShowResults] = useState(false);
   const [birthDate, setBirthDate] = useState('');
   const [hoveredEvent, setHoveredEvent] = useState<LifeEvent | null>(null);
+  const [showTimeline, setShowTimeline] = useState(false);
+  const [showDailyBreakdown, setShowDailyBreakdown] = useState(false);
 
   const questions = [
     {
@@ -163,29 +165,52 @@ export default function QuizPage() {
 
   const renderLifeTimeline = () => {
     const age = calculateAge();
-    const { monthsLeft } = calculateTimeLeft();
-    const totalMonths = 79.5 * 12; // 954 months
-    const passedMonths = age * 12;
+    const totalYears = 80; // Round up to 80 years for cleaner display
+    const passedYears = age;
+    
+    // Create life periods (10-year blocks)
+    const lifePeriods = [
+      { name: 'Childhood (0-10)', years: [0, 10], color: '#93C5FD', description: 'The wonder years' },
+      { name: 'Teenage Years (11-20)', years: [11, 20], color: '#FBBF24', description: 'The awkward phase' },
+      { name: 'Young Adult (21-30)', years: [21, 30], color: '#34D399', description: 'Finding your path' },
+      { name: 'Adult Life (31-40)', years: [31, 40], color: '#A78BFA', description: 'Building your life' },
+      { name: 'Midlife (41-50)', years: [41, 50], color: '#F59E0B', description: 'The crisis years' },
+      { name: 'Mature Adult (51-60)', years: [51, 60], color: '#F87171', description: 'Wisdom comes' },
+      { name: 'Pre-Retirement (61-70)', years: [61, 70], color: '#10B981', description: 'Planning the golden years' },
+      { name: 'Golden Years (71-80)', years: [71, 80], color: '#8B5CF6', description: 'The final chapter' }
+    ];
     
     const squares = [];
-    for (let i = 0; i < totalMonths; i++) {
-      const isPassed = i < passedMonths;
-      const currentAge = i / 12;
-      const event = lifeEvents.find(e => Math.abs(e.age - currentAge) < 0.5);
+    const squaresPerYear = 12; // 12 months per year
+    const totalSquares = totalYears * squaresPerYear;
+    
+    for (let i = 0; i < totalSquares; i++) {
+      const currentYear = Math.floor(i / squaresPerYear);
+      const isPassed = currentYear < passedYears;
+      const period = lifePeriods.find(p => currentYear >= p.years[0] && currentYear <= p.years[1]);
+      const isHoveredPeriod = hoveredEvent && period && hoveredEvent.name === period.name;
       
       squares.push(
         <div
           key={i}
-          className={`w-2 h-2 border border-gray-300 ${isPassed ? 'bg-gray-400' : 'bg-white'} hover:scale-125 transition-transform cursor-pointer`}
-          onMouseEnter={() => setHoveredEvent(event || null)}
+          className={`w-3 h-3 border transition-all duration-200 cursor-pointer ${
+            isHoveredPeriod 
+              ? 'border-[#B2E4F6] bg-[#B2E4F6]' 
+              : isPassed 
+                ? 'border-gray-400 bg-gray-400' 
+                : 'border-gray-300 bg-white'
+          }`}
+          onMouseEnter={() => setHoveredEvent(period ? { name: period.name, age: currentYear, color: period.color, description: period.description } : null)}
           onMouseLeave={() => setHoveredEvent(null)}
         />
       );
     }
 
     return (
-      <div className="grid grid-cols-53 gap-0.5 max-w-4xl mx-auto">
-        {squares}
+      <div className="flex justify-center">
+        <div className="grid grid-cols-24 gap-0.5">
+          {squares}
+        </div>
       </div>
     );
   };
@@ -195,113 +220,337 @@ export default function QuizPage() {
     const dailyWasted = calculateDailyTimeWasted();
     const dailyProductive = calculateDailyTimeProductive();
 
-    return (
-      <div className="min-h-screen bg-[#B2E4F6] relative overflow-hidden">
-        {/* Back to Home Link */}
-        <div className="absolute top-6 left-8 z-20">
-          <Link href="/" className="block hover:scale-110 transition-transform duration-200">
-            <Image
-              src="/images/clock.png"
-              alt="Alarm Clock - Home"
-              width={60}
-              height={60}
-              className="w-10 h-10 md:w-12 md:h-12 lg:w-14 lg:h-14"
-            />
-          </Link>
-        </div>
+    if (!showTimeline && !showDailyBreakdown) {
+      return (
+        <div className="min-h-screen bg-[#B2E4F6] relative overflow-hidden flex items-center justify-center">
+          {/* Back to Home Link */}
+          <div className="absolute top-6 left-8 z-20">
+            <Link href="/" className="block hover:scale-110 transition-transform duration-200">
+              <Image
+                src="/images/clock.png"
+                alt="Alarm Clock - Home"
+                width={60}
+                height={60}
+                className="w-10 h-10 md:w-12 md:h-12 lg:w-14 lg:h-14"
+              />
+            </Link>
+          </div>
 
-        <div className="relative z-10 px-4 py-8">
-          <div className="max-w-6xl mx-auto">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-black mb-4 text-center"
-                style={{
-                  fontFamily: 'var(--font-playfull-daily)',
-                  textShadow: '4px 4px 0px white, -4px -4px 0px white, 4px -4px 0px white, -4px 4px 0px white'
-                }}>
-              Your Time Analysis
-            </h1>
+          <div className="relative z-10 px-4 py-8">
+            <div className="max-w-4xl mx-auto text-center">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-black mb-8"
+                  style={{
+                    fontFamily: 'var(--font-playfull-daily)',
+                    textShadow: '4px 4px 0px white, -4px -4px 0px white, 4px -4px 0px white, -4px 4px 0px white'
+                  }}>
+                Your Time Analysis
+              </h1>
 
-            {/* Life Timeline */}
-            <div className="bg-white rounded-2xl p-8 shadow-lg mb-8">
-              <h2 className="text-2xl font-bold text-black mb-6 text-center" style={{ fontFamily: 'var(--font-playfull-daily)' }}>
-                Your Life Timeline
-              </h2>
-              <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700 mb-2">Your birth date:</label>
-                <input
-                  type="date"
-                  value={birthDate}
-                  onChange={(e) => setBirthDate(e.target.value)}
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#B2E4F6] focus:border-transparent"
-                />
-              </div>
-              
-              {birthDate && (
-                <div className="space-y-4">
-                  <p className="text-center text-lg">
-                    You have approximately <span className="font-bold text-[#B2E4F6]">{yearsLeft.toFixed(1)} years</span> left to live.
-                  </p>
-                  
-                  <div className="relative">
-                    {renderLifeTimeline()}
-                    {hoveredEvent && (
-                      <div className="absolute bg-white p-3 rounded-lg shadow-lg border z-10">
-                        <p className="font-bold">{hoveredEvent.name}</p>
-                        <p className="text-sm text-gray-600">{hoveredEvent.description}</p>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Daily Time Breakdown */}
-            <div className="bg-white rounded-2xl p-8 shadow-lg mb-8">
-              <h2 className="text-2xl font-bold text-black mb-6 text-center" style={{ fontFamily: 'var(--font-playfull-daily)' }}>
-                Your Daily Time Breakdown
-              </h2>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-4">
-                  <h3 className="text-xl font-bold text-green-600">Productive Time: {dailyProductive.toFixed(1)} hours</h3>
-                  <div className="bg-green-100 rounded-lg p-4">
-                    <p className="text-sm text-green-800">This is your actual productive time per day</p>
-                  </div>
+              <div className="bg-white rounded-2xl p-8 shadow-lg">
+                <h2 className="text-3xl md:text-4xl font-bold text-black mb-6" style={{ fontFamily: 'var(--font-playfull-daily)' }}>
+                  Your Life Timeline
+                </h2>
+                
+                <div className="mb-6">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Your birth date:</label>
+                  <input
+                    type="date"
+                    value={birthDate}
+                    onChange={(e) => setBirthDate(e.target.value)}
+                    className="w-full max-w-md mx-auto p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#B2E4F6] focus:border-transparent"
+                  />
                 </div>
                 
-                <div className="space-y-4">
-                  <h3 className="text-xl font-bold text-red-600">Time Wasted: {dailyWasted.toFixed(1)} hours</h3>
-                  <div className="bg-red-100 rounded-lg p-4">
-                    <p className="text-sm text-red-800">This is time you could be using more effectively</p>
+                {birthDate && (
+                  <div className="space-y-6">
+                    <p className="text-xl">
+                      You have approximately <span className="font-bold text-[#B2E4F6]">{yearsLeft.toFixed(1)} years</span> left to live.
+                    </p>
+                    
+                    <button
+                      onClick={() => setShowTimeline(true)}
+                      className="bg-[#B2E4F6] text-white px-8 py-4 rounded-full text-xl font-bold hover:scale-105 transition-all duration-150"
+                      style={{ fontFamily: 'var(--font-playfull-daily)' }}
+                    >
+                      See Your Life Timeline
+                    </button>
                   </div>
+                )}
+
+                <div className="mt-8 pt-6 border-t border-gray-200">
+                  <button
+                    onClick={() => setShowDailyBreakdown(true)}
+                    className="bg-[#F5F184] text-[#AFA20C] px-8 py-4 rounded-full text-xl font-bold hover:scale-105 transition-all duration-150"
+                    style={{ fontFamily: 'var(--font-playfull-daily)' }}
+                  >
+                    See Your Quiz Results
+                  </button>
                 </div>
               </div>
-            </div>
 
-            {/* Action Buttons */}
-            <div className="text-center space-x-4">
-              <button
-                onClick={() => {
-                  setShowResults(false);
-                  setCurrentQuestion(0);
-                  setAnswers([]);
-                }}
-                className="bg-[#F5F184] text-[#AFA20C] px-6 py-3 rounded-full font-bold hover:scale-105 transition-all duration-150"
-                style={{ fontFamily: 'var(--font-playfull-daily)' }}
-              >
-                Retake Quiz
-              </button>
-              <Link
-                href="/present"
-                className="inline-block bg-[#B2E4F6] text-white px-6 py-3 rounded-full font-bold hover:scale-105 transition-all duration-150"
-                style={{ fontFamily: 'var(--font-playfull-daily)' }}
-              >
-                Start Managing Time
-              </Link>
+              {/* Action Buttons */}
+              <div className="mt-8 space-x-4">
+                <button
+                  onClick={() => {
+                    setShowResults(false);
+                    setCurrentQuestion(0);
+                    setAnswers([]);
+                    setShowTimeline(false);
+                    setShowDailyBreakdown(false);
+                  }}
+                  className="bg-gray-500 text-white px-6 py-3 rounded-full font-bold hover:scale-105 transition-all duration-150"
+                  style={{ fontFamily: 'var(--font-playfull-daily)' }}
+                >
+                  Retake Quiz
+                </button>
+                <Link
+                  href="/present"
+                  className="inline-block bg-black text-white px-6 py-3 rounded-full font-bold hover:scale-105 transition-all duration-150"
+                  style={{ fontFamily: 'var(--font-playfull-daily)' }}
+                >
+                  Start Managing Time
+                </Link>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    );
+      );
+    }
+
+    if (showTimeline) {
+      return (
+        <div className="min-h-screen bg-[#B2E4F6] relative overflow-hidden">
+          {/* Back to Home Link */}
+          <div className="absolute top-6 left-8 z-20">
+            <Link href="/" className="block hover:scale-110 transition-transform duration-200">
+              <Image
+                src="/images/clock.png"
+                alt="Alarm Clock - Home"
+                width={60}
+                height={60}
+                className="w-10 h-10 md:w-12 md:h-12 lg:w-14 lg:h-14"
+              />
+            </Link>
+          </div>
+
+          <div className="relative z-10 px-4 py-8">
+            <div className="max-w-6xl mx-auto">
+              <div className="text-center mb-8">
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-black mb-4"
+                    style={{
+                      fontFamily: 'var(--font-playfull-daily)',
+                      textShadow: '4px 4px 0px white, -4px -4px 0px white, 4px -4px 0px white, -4px 4px 0px white'
+                    }}>
+                  Your Life Timeline
+                </h1>
+                <p className="text-xl text-black" style={{ fontFamily: 'var(--font-playfull-daily)' }}>
+                  Each square represents one month of your life
+                </p>
+              </div>
+
+              <div className="bg-white rounded-2xl p-6 shadow-lg mb-8 max-w-lg mx-auto">
+                                  <div className="text-center mb-4">
+                    <p className="text-lg font-semibold text-black">
+                      You have approximately <span className="font-bold text-2xl text-[#B2E4F6]">{yearsLeft.toFixed(1)} years</span> left to live
+                    </p>
+                  </div>
+                <div className="relative">
+                  {renderLifeTimeline()}
+                  {hoveredEvent && (
+                    <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-full bg-white p-4 rounded-lg shadow-lg border z-10 mb-2">
+                      <div className="text-center">
+                        <p className="font-bold text-lg text-black" style={{ fontFamily: 'var(--font-playfull-daily)' }}>
+                          {hoveredEvent.name}
+                        </p>
+                        <p className="text-sm text-gray-600 mt-1">{hoveredEvent.description}</p>
+                      </div>
+                      {/* Arrow pointing down */}
+                      <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-white"></div>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="text-center space-x-4">
+                <button
+                  onClick={() => setShowTimeline(false)}
+                  className="bg-gray-600 text-white px-6 py-3 rounded-full font-bold hover:scale-105 transition-all duration-150"
+                  style={{ fontFamily: 'var(--font-playfull-daily)' }}
+                >
+                  Back to Analysis
+                </button>
+                <button
+                  onClick={() => setShowDailyBreakdown(true)}
+                  className="bg-[#F5F184] text-[#AFA20C] px-6 py-3 rounded-full font-bold hover:scale-105 transition-all duration-150"
+                  style={{ fontFamily: 'var(--font-playfull-daily)' }}
+                >
+                  See Quiz Results
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    if (showDailyBreakdown) {
+      return (
+        <div className="min-h-screen bg-[#B2E4F6] relative overflow-hidden">
+          {/* Back to Home Link */}
+          <div className="absolute top-6 left-8 z-20">
+            <Link href="/" className="block hover:scale-110 transition-transform duration-200">
+              <Image
+                src="/images/clock.png"
+                alt="Alarm Clock - Home"
+                width={60}
+                height={60}
+                className="w-10 h-10 md:w-12 md:h-12 lg:w-14 lg:h-14"
+              />
+            </Link>
+          </div>
+
+          <div className="relative z-10 px-4 py-8">
+            <div className="max-w-6xl mx-auto">
+              <div className="text-center mb-8">
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-black mb-4"
+                    style={{
+                      fontFamily: 'var(--font-playfull-daily)',
+                      textShadow: '4px 4px 0px white, -4px -4px 0px white, 4px -4px 0px white, -4px 4px 0px white'
+                    }}>
+                  Your Daily Time Breakdown
+                </h1>
+              </div>
+
+              <div className="bg-white rounded-2xl p-8 shadow-lg mb-8">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                  {/* Pie Chart */}
+                  <div className="space-y-6">
+                    <h3 className="text-2xl font-bold text-black text-center" style={{ fontFamily: 'var(--font-playfull-daily)' }}>
+                      Daily Time Distribution
+                    </h3>
+                    <div className="flex justify-center">
+                      <div className="relative w-64 h-64">
+                        {/* Pie Chart SVG */}
+                        <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                          <circle
+                            cx="50"
+                            cy="50"
+                            r="40"
+                            fill="none"
+                            stroke="#E5E7EB"
+                            strokeWidth="20"
+                          />
+                          <circle
+                            cx="50"
+                            cy="50"
+                            r="40"
+                            fill="none"
+                            stroke="#10B981"
+                            strokeWidth="20"
+                            strokeDasharray={`${(dailyProductive / 24) * 251.2} 251.2`}
+                            strokeDashoffset="0"
+                          />
+                          <circle
+                            cx="50"
+                            cy="50"
+                            r="40"
+                            fill="none"
+                            stroke="#EF4444"
+                            strokeWidth="20"
+                            strokeDasharray={`${(dailyWasted / 24) * 251.2} 251.2`}
+                            strokeDashoffset={`-${(dailyProductive / 24) * 251.2}`}
+                          />
+                          <circle
+                            cx="50"
+                            cy="50"
+                            r="40"
+                            fill="none"
+                            stroke="#3B82F6"
+                            strokeWidth="20"
+                            strokeDasharray={`${((24 - dailyProductive - dailyWasted) / 24) * 251.2} 251.2`}
+                            strokeDashoffset={`-${((dailyProductive + dailyWasted) / 24) * 251.2}`}
+                          />
+                        </svg>
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <div className="text-center">
+                            <div className="text-2xl font-bold text-black">24h</div>
+                            <div className="text-sm text-gray-600">Total</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Bar Chart */}
+                  <div className="space-y-6">
+                    <h3 className="text-2xl font-bold text-black text-center" style={{ fontFamily: 'var(--font-playfull-daily)' }}>
+                      Time Breakdown
+                    </h3>
+                    <div className="space-y-4">
+                      <div>
+                        <div className="flex justify-between mb-2">
+                          <span className="font-semibold text-green-600">Productive</span>
+                          <span className="font-semibold">{dailyProductive.toFixed(1)}h</span>
+                        </div>
+                        <div className="w-full bg-gray-200 rounded-full h-4">
+                          <div 
+                            className="bg-green-500 h-4 rounded-full transition-all duration-500"
+                            style={{ width: `${(dailyProductive / 24) * 100}%` }}
+                          ></div>
+                        </div>
+                      </div>
+                      
+                      <div>
+                        <div className="flex justify-between mb-2">
+                          <span className="font-semibold text-red-600">Wasted</span>
+                          <span className="font-semibold">{dailyWasted.toFixed(1)}h</span>
+                        </div>
+                        <div className="w-full bg-gray-200 rounded-full h-4">
+                          <div 
+                            className="bg-red-500 h-4 rounded-full transition-all duration-500"
+                            style={{ width: `${(dailyWasted / 24) * 100}%` }}
+                          ></div>
+                        </div>
+                      </div>
+                      
+                      <div>
+                        <div className="flex justify-between mb-2">
+                          <span className="font-semibold text-blue-600">Other</span>
+                          <span className="font-semibold">{(24 - dailyProductive - dailyWasted).toFixed(1)}h</span>
+                        </div>
+                        <div className="w-full bg-gray-200 rounded-full h-4">
+                          <div 
+                            className="bg-blue-500 h-4 rounded-full transition-all duration-500"
+                            style={{ width: `${((24 - dailyProductive - dailyWasted) / 24) * 100}%` }}
+                          ></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="text-center space-x-4">
+                <button
+                  onClick={() => setShowDailyBreakdown(false)}
+                  className="bg-[#F5F184] text-[#AFA20C] px-6 py-3 rounded-full font-bold hover:scale-105 transition-all duration-150"
+                  style={{ fontFamily: 'var(--font-playfull-daily)' }}
+                >
+                  Back to Analysis
+                </button>
+                <Link
+                  href="/present"
+                  className="inline-block bg-[#B2E4F6] text-white px-6 py-3 rounded-full font-bold hover:scale-105 transition-all duration-150"
+                  style={{ fontFamily: 'var(--font-playfull-daily)' }}
+                >
+                  Start Managing Time
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
   }
 
   const currentQ = questions[currentQuestion];
