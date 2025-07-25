@@ -1,9 +1,19 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
-import { SignedIn, SignedOut } from '@clerk/nextjs';
+import { SignedIn, SignedOut, useAuth } from '@clerk/nextjs';
+import { useRouter } from 'next/navigation';
 import AuthButtons from '../components/AuthButtons';
 
 export default function AboutPage() {
+  const { isSignedIn, isLoaded } = useAuth();
+  const router = useRouter();
+
+  const handleGetStarted = () => {
+    router.push('/get-started');
+  };
+
   return (
     <div className="min-h-screen bg-[#B2E4F6]">
       {/* Header Navigation */}
@@ -153,11 +163,12 @@ export default function AboutPage() {
                 Start your journey towards better time management today.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link href="/get-started">
-                  <button className="px-8 py-4 bg-black text-white rounded-full text-lg font-bold">
-                    Get Started
-                  </button>
-                </Link>
+                <button 
+                  onClick={handleGetStarted}
+                  className="px-8 py-4 bg-black text-white rounded-full text-lg font-bold"
+                >
+                  Get Started
+                </button>
                 <Link href="/">
                   <button className="px-8 py-4 bg-white text-[#B2E4F6] rounded-full text-lg font-bold">
                     Learn More

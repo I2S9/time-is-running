@@ -12,13 +12,7 @@ export default function Home() {
   const router = useRouter();
 
   const handleGetStarted = () => {
-    if (isLoaded) {
-      if (isSignedIn) {
-        router.push('/get-started');
-      } else {
-        router.push('/sign-in');
-      }
-    }
+    router.push('/get-started');
   };
 
   return (

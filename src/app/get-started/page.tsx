@@ -12,15 +12,10 @@ export default function GetStartedPage() {
 
   useEffect(() => {
     if (isLoaded) {
-      if (!isSignedIn) {
-        // Si l'utilisateur n'est pas connecté, rediriger vers la page de connexion
-        router.push('/sign-in');
-      } else {
-        // Si l'utilisateur est connecté, rediriger directement vers le quiz
-        router.push('/quiz');
-      }
+      // Rediriger directement vers le quiz pour tous les utilisateurs
+      router.push('/quiz');
     }
-  }, [isSignedIn, isLoaded, router]);
+  }, [isLoaded, router]);
 
   // Afficher un loader pendant que Clerk charge
   if (!isLoaded) {
@@ -36,10 +31,7 @@ export default function GetStartedPage() {
     );
   }
 
-  // Si l'utilisateur n'est pas connecté ou si la redirection est en cours, ne rien afficher
-  if (!isSignedIn) {
-    return null;
-  }
+
 
   // Page de transition (ne devrait pas s'afficher longtemps)
   return (

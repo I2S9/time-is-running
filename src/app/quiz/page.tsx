@@ -264,7 +264,7 @@ export default function QuizPage() {
           {/* Back to Home Link */}
           <div className="absolute top-6 left-8 z-20">
             <Link href="/" className="block hover:scale-110 transition-transform duration-200">
-              <Image
+        <Image
                 src="/images/clock.png"
                 alt="Alarm Clock - Home"
                 width={60}
@@ -361,7 +361,7 @@ export default function QuizPage() {
           {/* Back to Home Link */}
           <div className="absolute top-6 left-8 z-20">
             <Link href="/" className="block hover:scale-110 transition-transform duration-200">
-              <Image
+        <Image
                 src="/images/clock.png"
                 alt="Alarm Clock - Home"
                 width={60}
@@ -453,7 +453,7 @@ export default function QuizPage() {
                  {/* Back to Home Link */}
                  <div className="absolute top-6 left-8 z-20">
                    <Link href="/" className="block hover:scale-110 transition-transform duration-200">
-                     <Image
+        <Image
                        src="/images/clock.png"
                        alt="Alarm Clock - Home"
                        width={60}
@@ -593,8 +593,8 @@ export default function QuizPage() {
                                Hover over sections
                              </div>
                            </div>
-                         </div>
-                         
+      </div>
+
                          {/* Legend */}
                          <div className="grid grid-cols-2 gap-4 text-sm">
                            <div className="flex items-center space-x-2">
@@ -725,16 +725,16 @@ export default function QuizPage() {
           {/* Header */}
           <div className="text-center mb-8">
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-black mb-2"
-                style={{
-                  fontFamily: 'var(--font-playfull-daily)',
+              style={{
+                fontFamily: 'var(--font-playfull-daily)',
                   textShadow: '4px 4px 0px white, -4px -4px 0px white, 4px -4px 0px white, -4px 4px 0px white'
-                }}>
-              Time Quiz
-            </h1>
+              }}>
+            Time Quiz
+          </h1>
                          <p className="text-lg md:text-xl text-black"
-                style={{ fontFamily: 'var(--font-playfull-daily)' }}>
-               Discover how much time you&apos;re really wasting
-             </p>
+             style={{ fontFamily: 'var(--font-playfull-daily)' }}>
+            Discover how much time you&apos;re really wasting
+          </p>
           </div>
 
           {/* Progress Bar */}
