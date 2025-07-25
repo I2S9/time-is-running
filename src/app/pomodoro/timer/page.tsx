@@ -5,9 +5,10 @@ import Link from 'next/link';
 import { SignedIn, SignedOut } from '@clerk/nextjs';
 import AuthButtons from '../../components/AuthButtons';
 import { useSearchParams } from 'next/navigation';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 
-export default function PomodoroTimerPage() {
+// Timer component that uses search params
+function TimerComponent() {
   const searchParams = useSearchParams();
   const duration = searchParams.get('duration') || '25';
   const customTime = searchParams.get('custom') || '';
@@ -53,14 +54,76 @@ export default function PomodoroTimerPage() {
     setIsPaused(false);
   };
 
-  // Get display text
-  const getDisplayText = () => {
-    if (customTime) {
-      return `${customTime} MINUTES`;
-    }
-    return `${duration} MINUTES`;
-  };
+  return (
+    <div className="text-center">
+      {/* Timer Display */}
+      <div className="mb-12">
+        <div className="text-8xl md:text-9xl lg:text-[12rem] font-bold text-black mb-8"
+             style={{ 
+               fontFamily: 'var(--font-playfull-daily)',
+               textShadow: '4px 4px 0px white, -4px -4px 0px white, 4px -4px 0px white, -4px 4px 0px white, 2px 2px 0px white, -2px -2px 0px white, 2px -2px 0px white, -2px 2px 0px white'
+             }}>
+          {formatTime(timeLeft)}
+        </div>
+      </div>
 
+      {/* Timer Controls */}
+      <div className="flex justify-center gap-6 mb-8">
+        <button 
+          onClick={toggleTimer}
+          className="bg-white text-black px-8 py-4 rounded-full text-lg font-bold transform hover:scale-105 hover:bg-gray-100 active:scale-95 active:bg-gray-200 active:text-gray-700 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed disabled:transform-none transition-all duration-150 relative z-10 cursor-pointer"
+          style={{ fontFamily: 'var(--font-playfull-daily)' }}
+        >
+          {isRunning && !isPaused ? 'PAUSE' : 'RESUME'}
+        </button>
+        <button 
+          onClick={restartTimer}
+          className="bg-white text-black px-8 py-4 rounded-full text-lg font-bold transform hover:scale-105 hover:bg-gray-100 active:scale-95 active:bg-gray-200 active:text-gray-700 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed disabled:transform-none transition-all duration-150 relative z-10 cursor-pointer"
+          style={{ fontFamily: 'var(--font-playfull-daily)' }}
+        >
+          RESTART
+        </button>
+      </div>
+
+      {/* Back to Timer Selection */}
+      <div className="relative inline-block">
+        <Link href="/pomodoro">
+          <button className="bg-white text-black px-8 py-4 rounded-full text-lg font-bold transform hover:scale-105 hover:bg-gray-100 active:scale-95 active:bg-gray-200 active:text-gray-700 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed disabled:transform-none transition-all duration-150 relative z-10 cursor-pointer"
+                  style={{ fontFamily: 'var(--font-playfull-daily)' }}>
+            GO BACK TO POMODORO
+          </button>
+        </Link>
+      </div>
+    </div>
+  );
+}
+
+// Loading component for Suspense fallback
+function TimerLoading() {
+  return (
+    <div className="text-center">
+      <div className="text-8xl md:text-9xl lg:text-[12rem] font-bold text-black mb-8 animate-pulse"
+           style={{ 
+             fontFamily: 'var(--font-playfull-daily)',
+             textShadow: '4px 4px 0px white, -4px -4px 0px white, 4px -4px 0px white, -4px 4px 0px white, 2px 2px 0px white, -2px -2px 0px white, 2px -2px 0px white, -2px 2px 0px white'
+           }}>
+        25:00
+      </div>
+      <div className="flex justify-center gap-6 mb-8">
+        <div className="bg-white text-black px-8 py-4 rounded-full text-lg font-bold animate-pulse"
+             style={{ fontFamily: 'var(--font-playfull-daily)' }}>
+          PAUSE
+        </div>
+        <div className="bg-white text-black px-8 py-4 rounded-full text-lg font-bold animate-pulse"
+             style={{ fontFamily: 'var(--font-playfull-daily)' }}>
+          RESTART
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function PomodoroTimerPage() {
   return (
     <div className="min-h-screen bg-[#B2E4F6]">
       {/* Header Navigation - Shorter with equidistant elements */}
@@ -114,48 +177,11 @@ export default function PomodoroTimerPage() {
         </Link>
       </div>
 
-            {/* Main Content */}
+      {/* Main Content */}
       <main className="relative z-10 px-4 flex items-center justify-center min-h-[calc(100vh-200px)]">
-        <div className="text-center">
-          {/* Timer Display */}
-          <div className="mb-12">
-            <div className="text-8xl md:text-9xl lg:text-[12rem] font-bold text-black mb-8"
-                 style={{ 
-                   fontFamily: 'var(--font-playfull-daily)',
-                   textShadow: '4px 4px 0px white, -4px -4px 0px white, 4px -4px 0px white, -4px 4px 0px white, 2px 2px 0px white, -2px -2px 0px white, 2px -2px 0px white, -2px 2px 0px white'
-                 }}>
-              {formatTime(timeLeft)}
-            </div>
-          </div>
-
-          {/* Timer Controls */}
-          <div className="flex justify-center gap-6 mb-8">
-            <button 
-              onClick={toggleTimer}
-              className="bg-white text-black px-8 py-4 rounded-full text-lg font-bold transform hover:scale-105 hover:bg-gray-100 active:scale-95 active:bg-gray-200 active:text-gray-700 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed disabled:transform-none transition-all duration-150 relative z-10 cursor-pointer"
-              style={{ fontFamily: 'var(--font-playfull-daily)' }}
-            >
-              {isRunning && !isPaused ? 'PAUSE' : 'RESUME'}
-            </button>
-            <button 
-              onClick={restartTimer}
-              className="bg-white text-black px-8 py-4 rounded-full text-lg font-bold transform hover:scale-105 hover:bg-gray-100 active:scale-95 active:bg-gray-200 active:text-gray-700 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed disabled:transform-none transition-all duration-150 relative z-10 cursor-pointer"
-              style={{ fontFamily: 'var(--font-playfull-daily)' }}
-            >
-              RESTART
-            </button>
-          </div>
-
-          {/* Back to Timer Selection */}
-          <div className="relative inline-block">
-            <Link href="/pomodoro">
-              <button className="bg-white text-black px-8 py-4 rounded-full text-lg font-bold transform hover:scale-105 hover:bg-gray-100 active:scale-95 active:bg-gray-200 active:text-gray-700 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed disabled:transform-none transition-all duration-150 relative z-10 cursor-pointer"
-                      style={{ fontFamily: 'var(--font-playfull-daily)' }}>
-                GO BACK TO POMODORO
-              </button>
-            </Link>
-          </div>
-        </div>
+        <Suspense fallback={<TimerLoading />}>
+          <TimerComponent />
+        </Suspense>
       </main>
     </div>
   );
