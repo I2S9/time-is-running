@@ -121,6 +121,11 @@ body {
   animation: clockBounceMd 2s ease-in-out infinite;
 }
 
+/* Custom grid for life timeline */
+.grid-cols-53 {
+  grid-template-columns: repeat(53, minmax(0, 1fr));
+}
+
 /* Custom styles for better responsive design */
 @media (max-width: 768px) {
   .text-shadow-responsive {

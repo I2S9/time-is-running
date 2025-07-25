@@ -1,10 +1,26 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
-import { SignedIn, SignedOut } from '@clerk/nextjs';
+import { SignedIn, SignedOut, useAuth } from '@clerk/nextjs';
+import { useRouter } from 'next/navigation';
 import CurrentTime from './components/CurrentTime';
 import AuthButtons from './components/AuthButtons';
 
 export default function Home() {
+  const { isSignedIn, isLoaded } = useAuth();
+  const router = useRouter();
+
+  const handleGetStarted = () => {
+    if (isLoaded) {
+      if (isSignedIn) {
+        router.push('/get-started');
+      } else {
+        router.push('/sign-in');
+      }
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#B2E4F6] relative overflow-hidden">
       {/* Animated Cloud decorations */}
@@ -147,8 +163,10 @@ export default function Home() {
 
           {/* Call to Action Button - Push effect with solid shadow */}
           <div className="relative inline-block">
-            <button className="bg-[#F5F184] text-[#AFA20C] px-12 py-6 md:px-16 md:py-8 rounded-full text-xl md:text-2xl lg:text-3xl font-bold transform hover:scale-105 transition-all duration-150 relative z-10 push-button cursor-pointer"
-                    style={{ fontFamily: 'var(--font-playfull-daily)' }}>
+            <button 
+              onClick={handleGetStarted}
+              className="bg-[#F5F184] text-[#AFA20C] px-12 py-6 md:px-16 md:py-8 rounded-full text-xl md:text-2xl lg:text-3xl font-bold transform hover:scale-105 transition-all duration-150 relative z-10 push-button cursor-pointer"
+              style={{ fontFamily: 'var(--font-playfull-daily)' }}>
               GET STARTED
             </button>
             {/* Solid shadow effect */}

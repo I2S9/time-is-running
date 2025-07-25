@@ -1,61 +1,314 @@
+'use client';
+
+import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
+interface QuizAnswer {
+  questionId: string;
+  answer: string;
+  value: number;
+}
+
+interface LifeEvent {
+  name: string;
+  age: number;
+  color: string;
+  description: string;
+}
+
 export default function QuizPage() {
+  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [answers, setAnswers] = useState<QuizAnswer[]>([]);
+  const [showResults, setShowResults] = useState(false);
+  const [birthDate, setBirthDate] = useState('');
+  const [hoveredEvent, setHoveredEvent] = useState<LifeEvent | null>(null);
+
+  const questions = [
+    {
+      id: 'sleep',
+      question: 'How much do you sleep?',
+      options: [
+        { text: 'Between 6-8 hours (I\'m a responsible adult)', value: 7 },
+        { text: 'Plunged into a coma (12+ hours)', value: 12 },
+        { text: 'I never actually started sleeping, to be honest', value: 3 },
+        { text: 'I\'m a vampire, I sleep during the day', value: 6 }
+      ]
+    },
+    {
+      id: 'exercise',
+      question: 'How often do you exercise?',
+      options: [
+        { text: 'I\'m basically a professional athlete', value: 5 },
+        { text: 'I walk to the fridge, does that count?', value: 1 },
+        { text: 'I never actually started, to be honest', value: 0 },
+        { text: 'I exercise my right to stay on the couch', value: 0.5 }
+      ]
+    },
+    {
+      id: 'phone',
+      question: 'How much time do you spend on your phone?',
+      options: [
+        { text: 'I\'m surgically attached to it', value: 6 },
+        { text: 'Just a few minutes... (said no one ever)', value: 3 },
+        { text: 'I still have a Nokia 3310', value: 0.5 },
+        { text: 'I\'m trying to reduce it... (while scrolling)', value: 4 }
+      ]
+    },
+    {
+      id: 'social_media',
+      question: 'How much time on social media?',
+      options: [
+        { text: 'I\'m an influencer (of my own life)', value: 4 },
+        { text: 'Just checking... (3 hours later)', value: 3 },
+        { text: 'I deleted all apps (but still check on browser)', value: 2 },
+        { text: 'What\'s social media? (said while posting)', value: 1 }
+      ]
+    },
+    {
+      id: 'procrastination',
+      question: 'How do you manage your time?',
+      options: [
+        { text: 'I\'m a time management guru', value: 1 },
+        { text: 'I\'ll do it tomorrow (said every day)', value: 3 },
+        { text: 'I waste time planning how to save time', value: 2 },
+        { text: 'I\'m perfectly organized (in my dreams)', value: 1.5 }
+      ]
+    },
+    {
+      id: 'work',
+      question: 'How productive are you at work?',
+      options: [
+        { text: 'I\'m the employee of the month (every month)', value: 1 },
+        { text: 'I work hard... at avoiding work', value: 2 },
+        { text: 'I\'m very productive at procrastinating', value: 3 },
+        { text: 'I get things done... eventually', value: 2.5 }
+      ]
+    }
+  ];
+
+  const lifeEvents: LifeEvent[] = [
+    { name: 'Your birth', age: 0, color: '#E5E7EB', description: 'Welcome to the world!' },
+    { name: 'First day of school', age: 5, color: '#93C5FD', description: 'The beginning of your academic journey' },
+    { name: 'Teenage years', age: 13, color: '#FBBF24', description: 'The awkward phase' },
+    { name: 'High school graduation', age: 18, color: '#34D399', description: 'Freedom at last!' },
+    { name: 'College/University', age: 18, color: '#A78BFA', description: 'The best years of your life' },
+    { name: 'First job', age: 22, color: '#F87171', description: 'Welcome to the real world' },
+    { name: 'Your wedding', age: 28, color: '#F9A8D4', description: 'The big day' },
+    { name: 'First child', age: 30, color: '#60A5FA', description: 'Life changes forever' },
+    { name: 'Midlife crisis', age: 40, color: '#F59E0B', description: 'Time to buy a sports car' },
+    { name: 'Your retirement', age: 65, color: '#10B981', description: 'Freedom again!' },
+    { name: 'Moving to retirement home', age: 75, color: '#8B5CF6', description: 'The golden years' },
+    { name: 'Your departure', age: 79.5, color: '#6B7280', description: 'The final chapter' }
+  ];
+
+  const handleAnswer = (questionId: string, answer: string, value: number) => {
+    const newAnswers = [...answers];
+    const existingIndex = newAnswers.findIndex(a => a.questionId === questionId);
+    
+    if (existingIndex >= 0) {
+      newAnswers[existingIndex] = { questionId, answer, value };
+    } else {
+      newAnswers.push({ questionId, answer, value });
+    }
+    
+    setAnswers(newAnswers);
+    
+    if (currentQuestion < questions.length - 1) {
+      setCurrentQuestion(currentQuestion + 1);
+    } else {
+      setShowResults(true);
+    }
+  };
+
+  const calculateProgress = () => {
+    return ((currentQuestion + 1) / questions.length) * 100;
+  };
+
+  const calculateAge = () => {
+    if (!birthDate) return 0;
+    const today = new Date();
+    const birth = new Date(birthDate);
+    let age = today.getFullYear() - birth.getFullYear();
+    const monthDiff = today.getMonth() - birth.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+      age--;
+    }
+    return age;
+  };
+
+  const calculateTimeLeft = () => {
+    const age = calculateAge();
+    const lifeExpectancy = 79.5;
+    const yearsLeft = Math.max(0, lifeExpectancy - age);
+    const monthsLeft = yearsLeft * 12;
+    return { yearsLeft, monthsLeft };
+  };
+
+  const calculateDailyTimeWasted = () => {
+    const phoneTime = answers.find(a => a.questionId === 'phone')?.value || 0;
+    const socialTime = answers.find(a => a.questionId === 'social_media')?.value || 0;
+    const procrastinationTime = answers.find(a => a.questionId === 'procrastination')?.value || 0;
+    const workWasteTime = answers.find(a => a.questionId === 'work')?.value || 0;
+    
+    return phoneTime + socialTime + procrastinationTime + workWasteTime;
+  };
+
+  const calculateDailyTimeProductive = () => {
+    const sleepTime = answers.find(a => a.questionId === 'sleep')?.value || 0;
+    const exerciseTime = answers.find(a => a.questionId === 'exercise')?.value || 0;
+    
+    return 24 - sleepTime - exerciseTime - calculateDailyTimeWasted();
+  };
+
+  const renderLifeTimeline = () => {
+    const age = calculateAge();
+    const { monthsLeft } = calculateTimeLeft();
+    const totalMonths = 79.5 * 12; // 954 months
+    const passedMonths = age * 12;
+    
+    const squares = [];
+    for (let i = 0; i < totalMonths; i++) {
+      const isPassed = i < passedMonths;
+      const currentAge = i / 12;
+      const event = lifeEvents.find(e => Math.abs(e.age - currentAge) < 0.5);
+      
+      squares.push(
+        <div
+          key={i}
+          className={`w-2 h-2 border border-gray-300 ${isPassed ? 'bg-gray-400' : 'bg-white'} hover:scale-125 transition-transform cursor-pointer`}
+          onMouseEnter={() => setHoveredEvent(event || null)}
+          onMouseLeave={() => setHoveredEvent(null)}
+        />
+      );
+    }
+
+    return (
+      <div className="grid grid-cols-53 gap-0.5 max-w-4xl mx-auto">
+        {squares}
+      </div>
+    );
+  };
+
+  if (showResults) {
+    const { yearsLeft, monthsLeft } = calculateTimeLeft();
+    const dailyWasted = calculateDailyTimeWasted();
+    const dailyProductive = calculateDailyTimeProductive();
+
+    return (
+      <div className="min-h-screen bg-[#B2E4F6] relative overflow-hidden">
+        {/* Back to Home Link */}
+        <div className="absolute top-6 left-8 z-20">
+          <Link href="/" className="block hover:scale-110 transition-transform duration-200">
+            <Image
+              src="/images/clock.png"
+              alt="Alarm Clock - Home"
+              width={60}
+              height={60}
+              className="w-10 h-10 md:w-12 md:h-12 lg:w-14 lg:h-14"
+            />
+          </Link>
+        </div>
+
+        <div className="relative z-10 px-4 py-8">
+          <div className="max-w-6xl mx-auto">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-black mb-4 text-center"
+                style={{
+                  fontFamily: 'var(--font-playfull-daily)',
+                  textShadow: '4px 4px 0px white, -4px -4px 0px white, 4px -4px 0px white, -4px 4px 0px white'
+                }}>
+              Your Time Analysis
+            </h1>
+
+            {/* Life Timeline */}
+            <div className="bg-white rounded-2xl p-8 shadow-lg mb-8">
+              <h2 className="text-2xl font-bold text-black mb-6 text-center" style={{ fontFamily: 'var(--font-playfull-daily)' }}>
+                Your Life Timeline
+              </h2>
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700 mb-2">Your birth date:</label>
+                <input
+                  type="date"
+                  value={birthDate}
+                  onChange={(e) => setBirthDate(e.target.value)}
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#B2E4F6] focus:border-transparent"
+                />
+              </div>
+              
+              {birthDate && (
+                <div className="space-y-4">
+                  <p className="text-center text-lg">
+                    You have approximately <span className="font-bold text-[#B2E4F6]">{yearsLeft.toFixed(1)} years</span> left to live.
+                  </p>
+                  
+                  <div className="relative">
+                    {renderLifeTimeline()}
+                    {hoveredEvent && (
+                      <div className="absolute bg-white p-3 rounded-lg shadow-lg border z-10">
+                        <p className="font-bold">{hoveredEvent.name}</p>
+                        <p className="text-sm text-gray-600">{hoveredEvent.description}</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Daily Time Breakdown */}
+            <div className="bg-white rounded-2xl p-8 shadow-lg mb-8">
+              <h2 className="text-2xl font-bold text-black mb-6 text-center" style={{ fontFamily: 'var(--font-playfull-daily)' }}>
+                Your Daily Time Breakdown
+              </h2>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-4">
+                  <h3 className="text-xl font-bold text-green-600">Productive Time: {dailyProductive.toFixed(1)} hours</h3>
+                  <div className="bg-green-100 rounded-lg p-4">
+                    <p className="text-sm text-green-800">This is your actual productive time per day</p>
+                  </div>
+                </div>
+                
+                <div className="space-y-4">
+                  <h3 className="text-xl font-bold text-red-600">Time Wasted: {dailyWasted.toFixed(1)} hours</h3>
+                  <div className="bg-red-100 rounded-lg p-4">
+                    <p className="text-sm text-red-800">This is time you could be using more effectively</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="text-center space-x-4">
+              <button
+                onClick={() => {
+                  setShowResults(false);
+                  setCurrentQuestion(0);
+                  setAnswers([]);
+                }}
+                className="bg-[#F5F184] text-[#AFA20C] px-6 py-3 rounded-full font-bold hover:scale-105 transition-all duration-150"
+                style={{ fontFamily: 'var(--font-playfull-daily)' }}
+              >
+                Retake Quiz
+              </button>
+              <Link
+                href="/present"
+                className="inline-block bg-[#B2E4F6] text-white px-6 py-3 rounded-full font-bold hover:scale-105 transition-all duration-150"
+                style={{ fontFamily: 'var(--font-playfull-daily)' }}
+              >
+                Start Managing Time
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const currentQ = questions[currentQuestion];
+  const progress = calculateProgress();
+
   return (
     <div className="min-h-screen bg-[#B2E4F6] relative overflow-hidden">
-      {/* Animated Cloud decorations */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {/* Floating clouds from right to left */}
-        <Image
-          src="/images/cloud.png"
-          alt="Cloud"
-          width={200}
-          height={120}
-          className="absolute top-8 w-32 h-20 opacity-80 animate-float-right-to-left-slow"
-        />
-        <Image
-          src="/images/white clouds.png"
-          alt="White Cloud"
-          width={300}
-          height={180}
-          className="absolute top-48 w-64 h-40 opacity-90 animate-float-right-to-left-slow"
-          style={{ animationDelay: '12s' }}
-        />
-        <Image
-          src="/images/cloud.png"
-          alt="Cloud"
-          width={200}
-          height={120}
-          className="absolute top-88 w-28 h-16 opacity-75 animate-float-right-to-left-slow"
-          style={{ animationDelay: '25s' }}
-        />
-        <Image
-          src="/images/white clouds.png"
-          alt="White Cloud"
-          width={300}
-          height={180}
-          className="absolute top-128 w-56 h-36 opacity-85 animate-float-right-to-left-slow"
-          style={{ animationDelay: '38s' }}
-        />
-        <Image
-          src="/images/cloud.png"
-          alt="Cloud"
-          width={200}
-          height={120}
-          className="absolute top-168 w-20 h-12 opacity-70 animate-float-right-to-left-slow"
-          style={{ animationDelay: '50s' }}
-        />
-        <Image
-          src="/images/white clouds.png"
-          alt="White Cloud"
-          width={300}
-          height={180}
-          className="absolute top-208 w-72 h-48 opacity-90 animate-float-right-to-left-slow"
-          style={{ animationDelay: '62s' }}
-        />
-      </div>
-
       {/* Back to Home Link */}
       <div className="absolute top-6 left-8 z-20">
         <Link href="/" className="block hover:scale-110 transition-transform duration-200">
@@ -69,52 +322,56 @@ export default function QuizPage() {
         </Link>
       </div>
 
-      {/* Main Content */}
-      <div className="relative z-10 flex items-center justify-center min-h-screen px-4">
-        <div className="text-center max-w-4xl mx-auto">
-          <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold text-black mb-8 md:mb-12" 
-              style={{
-                fontFamily: 'var(--font-playfull-daily)',
-                textShadow: '6px 6px 0px white, -6px -6px 0px white, 6px -6px 0px white, -6px 6px 0px white, 4px 4px 0px white, -4px -4px 0px white, 4px -4px 0px white, -4px 4px 0px white, 2px 2px 0px white, -2px -2px 0px white, 2px -2px 0px white, -2px 2px 0px white'
-              }}>
-            Time Quiz
-          </h1>
-          
-          <p className="text-xl md:text-2xl lg:text-3xl font-bold text-black mb-8 md:mb-12 max-w-3xl mx-auto leading-relaxed"
-             style={{ fontFamily: 'var(--font-playfull-daily)' }}>
-            Discover how much time you&apos;re really wasting
-          </p>
+      <div className="relative z-10 px-4 py-8">
+        <div className="max-w-4xl mx-auto">
+          {/* Header */}
+          <div className="text-center mb-8">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-black mb-2"
+                style={{
+                  fontFamily: 'var(--font-playfull-daily)',
+                  textShadow: '4px 4px 0px white, -4px -4px 0px white, 4px -4px 0px white, -4px 4px 0px white'
+                }}>
+              Time Quiz
+            </h1>
+                         <p className="text-lg md:text-xl text-black"
+                style={{ fontFamily: 'var(--font-playfull-daily)' }}>
+               Discover how much time you&apos;re really wasting
+             </p>
+          </div>
 
-          <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-lg max-w-2xl mx-auto">
-            <h2 className="text-3xl font-bold text-black mb-6" style={{ fontFamily: 'var(--font-playfull-daily)' }}>
-              Quiz Coming Soon!
-            </h2>
-            <p className="text-gray-700 mb-8 text-lg">
-              This quiz will help you understand your current time management habits 
-              and identify areas where you can improve.
-            </p>
-            
-            <div className="space-y-4">
-              <div className="bg-gray-100 rounded-xl p-4">
-                <h3 className="font-bold text-black mb-2">What you&apos;ll discover:</h3>
-                <ul className="text-gray-700 text-left space-y-2">
-                  <li>• How much time you spend on distractions</li>
-                  <li>• Your most productive hours</li>
-                  <li>• Time-wasting habits to break</li>
-                  <li>• Personalized improvement tips</li>
-                </ul>
+          {/* Progress Bar */}
+          <div className="bg-white rounded-2xl p-8 shadow-lg mb-8">
+            <div className="mb-6">
+              <div className="flex justify-between text-sm text-gray-600 mb-2">
+                <span>Question {currentQuestion + 1} of {questions.length}</span>
+                <span>{Math.round(progress)}%</span>
+              </div>
+              <div className="w-full bg-gray-200 rounded-full h-3">
+                <div 
+                  className="bg-[#B2E4F6] h-3 rounded-full transition-all duration-300"
+                  style={{ width: `${progress}%` }}
+                ></div>
               </div>
             </div>
 
-            <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/get-started" className="inline-block bg-black text-white px-6 py-3 rounded-full font-bold hover:bg-gray-800 transition-colors"
-                    style={{ fontFamily: 'var(--font-playfull-daily)' }}>
-                Back to Get Started
-              </Link>
-              <Link href="/present" className="inline-block bg-[#F5F184] text-[#AFA20C] px-6 py-3 rounded-full font-bold hover:scale-105 transition-all duration-150"
-                    style={{ fontFamily: 'var(--font-playfull-daily)' }}>
-                Go to Present
-              </Link>
+            {/* Question */}
+            <div className="text-center mb-8">
+              <h2 className="text-2xl font-bold text-black mb-6" style={{ fontFamily: 'var(--font-playfull-daily)' }}>
+                {currentQ.question}
+              </h2>
+              
+              <div className="space-y-4">
+                {currentQ.options.map((option, index) => (
+                  <button
+                    key={index}
+                    onClick={() => handleAnswer(currentQ.id, option.text, option.value)}
+                    className="w-full bg-gray-50 hover:bg-[#B2E4F6] hover:text-white p-4 rounded-xl text-left transition-all duration-200 border-2 border-transparent hover:border-[#B2E4F6]"
+                    style={{ fontFamily: 'var(--font-playfull-daily)' }}
+                  >
+                    {option.text}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         </div>
