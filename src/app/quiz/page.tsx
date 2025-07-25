@@ -31,60 +31,96 @@ export default function QuizPage() {
       id: 'sleep',
       question: 'How much do you sleep?',
       options: [
-        { text: 'Between 6-8 hours (I\'m a responsible adult)', value: 7 },
-        { text: 'Plunged into a coma (12+ hours)', value: 12 },
+        { text: '3-4 hours (night owl)', value: 3.5 },
+        { text: '4-6 hours (busy life)', value: 5 },
+        { text: '6-8 hours (healthy balance)', value: 7 },
+        { text: '8-10 hours (sleep lover)', value: 9 },
         { text: 'I never actually started sleeping, to be honest', value: 3 },
-        { text: 'I\'m a vampire, I sleep during the day', value: 6 }
+        { text: 'Plunged into a coma (12+ hours)', value: 12 }
+      ]
+    },
+    {
+      id: 'shower',
+      question: 'How long do you spend in the shower?',
+      options: [
+        { text: '3-5 minutes (efficient)', value: 0.25 },
+        { text: '5-10 minutes (normal)', value: 0.5 },
+        { text: '10-15 minutes (relaxing)', value: 0.75 },
+        { text: '15+ minutes (spa time)', value: 1 },
+        { text: 'Zero shower, I study computer science', value: 0 },
+        { text: 'Until the hot water runs out', value: 1.5 }
+      ]
+    },
+    {
+      id: 'eating',
+      question: 'How much time do you spend eating?',
+      options: [
+        { text: '5-15 minutes (quick meals)', value: 0.25 },
+        { text: '15-30 minutes (normal pace)', value: 0.5 },
+        { text: '30-45 minutes (enjoying food)', value: 0.75 },
+        { text: '45+ minutes (foodie)', value: 1 },
+        { text: '5 minutes for pasta box', value: 0.25 },
+        { text: 'No time to eat, I grind', value: 0.25 }
       ]
     },
     {
       id: 'exercise',
       question: 'How often do you exercise?',
       options: [
-        { text: 'I\'m basically a professional athlete', value: 5 },
-        { text: 'I walk to the fridge, does that count?', value: 1 },
-        { text: 'I never actually started, to be honest', value: 0 },
-        { text: 'I exercise my right to stay on the couch', value: 0.5 }
+        { text: 'Occasionally (when motivated)', value: 0.25 },
+        { text: '30 minutes daily (consistent)', value: 0.5 },
+        { text: '1 hour 3-4 times/week (active)', value: 0.75 },
+        { text: '2+ hours daily (fitness freak)', value: 2 },
+        { text: 'I walk to the fridge, does that count?', value: 0.1 },
+        { text: 'I never actually started, to be honest', value: 0 }
       ]
     },
     {
       id: 'phone',
       question: 'How much time do you spend on your phone?',
       options: [
-        { text: 'I\'m surgically attached to it', value: 6 },
-        { text: 'Just a few minutes... (said no one ever)', value: 3 },
+        { text: '30 minutes daily (light user)', value: 0.5 },
+        { text: '1-2 hours daily (moderate)', value: 1.5 },
+        { text: '2-4 hours daily (heavy user)', value: 3 },
+        { text: '4+ hours daily (addicted)', value: 5 },
         { text: 'I still have a Nokia 3310', value: 0.5 },
-        { text: 'I\'m trying to reduce it... (while scrolling)', value: 4 }
+        { text: 'I\'m surgically attached to it', value: 7 }
       ]
     },
     {
       id: 'social_media',
       question: 'How much time on social media?',
       options: [
-        { text: 'I\'m an influencer (of my own life)', value: 4 },
-        { text: 'Just checking... (3 hours later)', value: 3 },
+        { text: '15 minutes daily (minimal)', value: 0.25 },
+        { text: '30 minutes daily (light user)', value: 0.5 },
+        { text: '1-2 hours daily (regular)', value: 1.5 },
+        { text: '2+ hours daily (heavy)', value: 3 },
         { text: 'I deleted all apps (but still check on browser)', value: 2 },
-        { text: 'What\'s social media? (said while posting)', value: 1 }
+        { text: 'I\'m an influencer (of my own life)', value: 5 }
       ]
     },
     {
       id: 'procrastination',
       question: 'How do you manage your time?',
       options: [
-        { text: 'I\'m a time management guru', value: 1 },
-        { text: 'I\'ll do it tomorrow (said every day)', value: 3 },
-        { text: 'I waste time planning how to save time', value: 2 },
-        { text: 'I\'m perfectly organized (in my dreams)', value: 1.5 }
+        { text: 'Very organized (planner)', value: 0.5 },
+        { text: 'Somewhat organized (tries hard)', value: 1 },
+        { text: 'Disorganized (chaos)', value: 2 },
+        { text: 'Complete mess (no structure)', value: 3 },
+        { text: 'I\'m a time management guru', value: 0.5 },
+        { text: 'I\'ll do it tomorrow (said every day)', value: 3 }
       ]
     },
     {
       id: 'work',
       question: 'How productive are you at work?',
       options: [
-        { text: 'I\'m the employee of the month (every month)', value: 1 },
-        { text: 'I work hard... at avoiding work', value: 2 },
-        { text: 'I\'m very productive at procrastinating', value: 3 },
-        { text: 'I get things done... eventually', value: 2.5 }
+        { text: 'Very productive (focused)', value: 0.5 },
+        { text: 'Moderately productive (some distractions)', value: 1 },
+        { text: 'Low productivity (many breaks)', value: 2 },
+        { text: 'Minimal productivity (mostly procrastinating)', value: 3 },
+        { text: 'I\'m the employee of the month (every month)', value: 0.5 },
+        { text: 'I work hard... at avoiding work', value: 2 }
       ]
     }
   ];
@@ -159,8 +195,10 @@ export default function QuizPage() {
   const calculateDailyTimeProductive = () => {
     const sleepTime = answers.find(a => a.questionId === 'sleep')?.value || 0;
     const exerciseTime = answers.find(a => a.questionId === 'exercise')?.value || 0;
+    const showerTime = answers.find(a => a.questionId === 'shower')?.value || 0;
+    const eatingTime = answers.find(a => a.questionId === 'eating')?.value || 0;
     
-    return 24 - sleepTime - exerciseTime - calculateDailyTimeWasted();
+    return 24 - sleepTime - exerciseTime - showerTime - eatingTime - calculateDailyTimeWasted();
   };
 
   const renderLifeTimeline = () => {
