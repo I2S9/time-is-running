@@ -1,36 +1,41 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ⏳ Time is Running  
 
-## Getting Started
+> **A confrontational time-management app** that makes procrastination physically painful (metaphorically).  
+Built with Next.js, TypeScript, and a disregard for subtlety.  
 
-First, run the development server:
+<img width="1080" height="720" alt="Mockup(29)" src="https://github.com/user-attachments/assets/bc4b6d5c-8337-4042-a40f-ec1a90a3900b" />
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🚀 Features  
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Time Shock Therapy  
+- **Mortality Countdown**: "You have X weeks left" calculated from life expectancy data.  
+- **Exploding Deadlines**: Tasks visually escalate when nearing due dates.  
+- **Procrastination Amplifier**: Tracks wasted time and displays it in Playfull Daily font (for science).  
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Unapologetic Design  
+- **Oversized UI**: Clocks, buttons, and progress bars you can’t ignore.  
+- **Brutalist Typography**: Because Helvetica doesn’t scream "YOUR TIME IS LIMITED".  
+- **Light Mode Default**: You’re confronting mortality—light mode is forbidden.  
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Technical Highlights  
+- Next.js App Router + TypeScript  
+- Tailwind CSS for aggressively large UI components  
+- Framer Motion for dramatic micro-interactions  
+- Clerk for auth (optional shame-sharing with friends)  
 
-## Learn More
+## 🛠Installation  
 
-To learn more about Next.js, take a look at the following resources:
+Clone the repository
+   ```bash  
+   git clone git@github.com:I2S9/time-is-running.git
+  ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Install dependencies
+   ```bash  
+   npm install  
+  ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Run the dev server on your computer
+   ```bash  
+   npm run dev  
+  ```
