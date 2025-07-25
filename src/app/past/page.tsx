@@ -7,30 +7,41 @@ import AuthButtons from '../components/AuthButtons';
 import Calendar from '../components/Calendar';
 import { useState } from 'react';
 
-// Sample journal entries for demonstration
-const sampleJournalEntries = [
-  {
-    id: '1',
-    date: '2024-01-15',
-    timeSpent: '8 hours working, 2 hours reading',
-    mood: 'happy' as const,
-    content: 'Had a productive day at work. Finished the project ahead of schedule and felt really accomplished. Spent some time reading in the evening which was relaxing.'
-  },
-  {
-    id: '2',
-    date: '2024-01-14',
-    timeSpent: '6 hours working, 1 hour exercise, 3 hours with family',
-    mood: 'neutral' as const,
-    content: 'Regular day at work. Did some exercise in the afternoon which felt good. Spent time with family in the evening.'
-  },
-  {
-    id: '3',
-    date: '2024-01-13',
-    timeSpent: '4 hours working, 2 hours gaming, 2 hours cooking',
-    mood: 'sad' as const,
-    content: 'Had a difficult day at work. Some issues with the project made me stressed. Tried to relax with some gaming and cooking.'
-  }
-];
+       // Sample journal entries for demonstration
+       const sampleJournalEntries = [
+         {
+           id: '1',
+           date: '2024-01-15',
+           timeEntries: [
+             { id: '1', task: 'Working', minutes: 480 },
+             { id: '2', task: 'Reading', minutes: 120 }
+           ],
+           mood: 'happy' as const,
+           content: 'Had a productive day at work. Finished the project ahead of schedule and felt really accomplished. Spent some time reading in the evening which was relaxing.'
+         },
+         {
+           id: '2',
+           date: '2024-01-14',
+           timeEntries: [
+             { id: '3', task: 'Working', minutes: 360 },
+             { id: '4', task: 'Exercise', minutes: 60 },
+             { id: '5', task: 'Family time', minutes: 180 }
+           ],
+           mood: 'neutral' as const,
+           content: 'Regular day at work. Did some exercise in the afternoon which felt good. Spent time with family in the evening.'
+         },
+         {
+           id: '3',
+           date: '2024-01-13',
+           timeEntries: [
+             { id: '6', task: 'Working', minutes: 240 },
+             { id: '7', task: 'Gaming', minutes: 120 },
+             { id: '8', task: 'Cooking', minutes: 120 }
+           ],
+           mood: 'sad' as const,
+           content: 'Had a difficult day at work. Some issues with the project made me stressed. Tried to relax with some gaming and cooking.'
+         }
+       ];
 
 export default function PastPage() {
   const [journalEntries, setJournalEntries] = useState(sampleJournalEntries);
